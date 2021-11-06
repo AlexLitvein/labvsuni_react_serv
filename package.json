@@ -1,0 +1,48 @@
+{
+  "name": "labvsuni",
+  "version": "1.0.0",
+  "description": "labvsuni",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack -w",
+    "start": "cross-env NODE_ENV=development webpack --mode development && node-dev index.js"
+  },
+  "keywords": [
+    "react.js",
+    "express.js",
+    "mongodb"
+  ],
+  "author": "Alex",
+  "license": "MIT",
+  "babel": {
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-react"
+    ]
+  },
+  "dependencies": {
+    "@babel/register": "^7.16.0",
+    "@babel/runtime": "^7.16.0",
+    "compression": "^1.5.1",
+    "errorhandler": "^1.4.1",
+    "express": "^4.17.1",
+    "express-handlebars": "^5.3.4",
+    "express-validator": "^6.13.0",
+    "mongodb": "^4.1.4",
+    "morgan": "^1.10.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.16.0",
+    "@babel/core": "^7.16.0",
+    "@babel/preset-env": "^7.16.0",
+    "@babel/preset-react": "^7.16.0",
+    "axios": "^0.24.0",
+    "babel-loader": "^8.2.3",
+    "cross-env": "^7.0.3",
+    "webpack": "^5.62.1",
+    "webpack-cli": "^4.9.1"
+  }
+}
