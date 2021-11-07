@@ -9,7 +9,7 @@ const express = require('express'),
   logger = require('morgan'),
   errorHandler = require('errorhandler'),
   compression = require('compression'),
-  url = 'mongodb://localhost:27017/SensDb',
+  url = 'mongodb://localhost:27017',
   ReactDOMServer = require('react-dom/server'),
   React = require('react');
 
@@ -19,16 +19,33 @@ const exphbs = require('express-handlebars');
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }));
 app.set('view engine', 'hbs');
 
-const Header = require('./components/header.jsx')
-const Footer = require('./components/footer.jsx')
-const MessageBoard = require('./components/board.jsx');
-const { default: SvgChart } = require('./components/SvgChart.js');
+// const Header = require('./components/header.jsx')
+// const Footer = require('./components/footer.jsx')
+// const MessageBoard = require('./components/board.jsx');
+// const { default: SvgChart } = require('./components/SvgChart.js');
+const { default: App } = require('./client/App.js');
 
-mongodb.MongoClient.connect(url, (err, db) => {
+const axis = {
+  _id: { name: 'Дата', min: 0, max: 0, type: 'H', cls: 'axis', clrPath: '#000ff00' },
+  t: { name: 'Температура', min: -50, max: 50, type: 'V', cls: 'axis', clrPath: '#FF0000' },
+  p: { name: 'Давление', min: 0, max: 1000, type: 'V', cls: 'axis', clrPath: '#4F4FD9' },
+  h: { name: 'Влажность', min: 0, max: 100, type: 'V', cls: 'axis', clrPath: '#FFFA40' },
+};
+  
+const options = {
+  padding: { top: 20, right: 10, bottom: 60, left: 30 },
+  countVLabels: 3,
+  axisTxtOffs: 8,
+};
+
+mongodb.MongoClient.connect(url, function (err, client) {
+// mongodb.MongoClient.connect(url, (err, db) => {
   if (err) {
     console.error(err)
     process.exit(1)
   }
+
+  let db = client.db('SensDb');
 
   app.use(compression())
   app.use(logger('dev'))
@@ -68,12 +85,19 @@ mongodb.MongoClient.connect(url, (err, db) => {
     // })
   })
 
-  app.get('/', (req, res, next) => {    
-      res.render('index', {       
-        chart: ReactDOMServer.renderToString(React.createElement(SvgChart , { options: options, axis: axis })),
+  // app.get('/', (req, res, next) => {    
+  //     res.render('index', {       
+  //       chart: ReactDOMServer.renderToString(React.createElement(SvgChart , { options: options, axis: axis })),
        
-      })   
-  })
+  //     })   
+  // })
+
+  app.get('/', (req, res, next) => {    
+    res.render('index', {       
+      chart: ReactDOMServer.renderToString(React.createElement(App , { store: {} })),
+     
+    })   
+})
 
   // app.get('/', (req, res, next) => {
   //   // console.log(req.messages);
@@ -94,5 +118,5 @@ mongodb.MongoClient.connect(url, (err, db) => {
   // })
 
   app.listen(3000);
-  console.log('serv started');
+  console.log('\x1b[33m%s\x1b[0m', 'serv started');
 })

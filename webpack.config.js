@@ -1,7 +1,29 @@
 const path = require('path');
 
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const {CleanWebpackPlugin} = require('clean-webpack-plugin')
+
 const isDev = process.env.NODE_ENV === 'development'
 const isProd = !isDev
+
+const cssLoaders = extra => {
+  const loaders = [
+    {
+      loader: MiniCssExtractPlugin.loader,
+      options: {
+        // reloadAll: true
+      },
+    },
+    'css-loader'
+  ]
+
+  if (extra) {
+    loaders.push(extra)
+  }
+
+  return loaders
+}
 
 const babelOptions = preset => {
   const opts = {
@@ -30,18 +52,39 @@ const jsLoaders = () => {
   return loaders
 }
 
+const plugins = () => {
+  const base = [    
+    new MiniCssExtractPlugin({
+      filename: "app.css",
+    }),
+    new CleanWebpackPlugin(),
+  ]
+
+  if (isProd) {
+    base.push(new BundleAnalyzerPlugin())
+  }
+
+  return base
+}
+
 module.exports = {
   mode: 'development',
   entry: {
     main: ['./client/app.jsx'],
   },  
   output: {
-    path: path.resolve(__dirname, '/public/js/'),
+    path: path.resolve(__dirname, 'public/js/'),
+    publicPath: '/',
     filename: 'bundle.js',
   },
-  devtool: isDev ? 'source-map' : '',
+  plugins: plugins(),
+  devtool: isDev ? 'source-map' : false,
   module: {
     rules: [
+      {
+        test: /\.css$/,
+        use: cssLoaders()
+      },
       {
         test: /\.js$/,
         exclude: /node_modules/,
