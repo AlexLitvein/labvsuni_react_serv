@@ -1,6 +1,25 @@
+var isServ = false;
+
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import './App.css';
+import { Provider, useDispatch, useSelector } from 'react-redux';
+// if (!isServ) {
+//   import('./css/style.css').then((something) => {
+//     console.log("import App.css");
+//   });
+// }
+import './css/style.css';
+// const React = require('react')
+// const ReactDOM = require('react-dom')
+// import { Provider } from 'react-redux';
+import MyStore from './store/DataController';
+
+// if (process.env.APP_PROCESS === 'webpack') {
+//   import( './App.css').then(() => {
+//     console.log("import App.css");
+//  });
+// }
+
+
 import SvgChart from './components/SvgChart';
 import { getSensData, selDataSets } from './dataRdcrs/paths';
 
@@ -159,42 +178,45 @@ function App() {
   }, []); // componentDidMount()
 
   return (
-    <div className="App">
-      <div id="controls">
+    <React.StrictMode>
+      <Provider store={MyStore}>
+        <div className="App">
+          <div id="controls">
+            <LocalizationProvider dateAdapter={AdapterDateFns} locale={ruLocale}>
+              <DatePicker
+                mask={'__.__.____'}
+                label="Basic example"
+                value={date}
+                onChange={(newVal) => onSetDate(newVal)}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
 
-        <LocalizationProvider dateAdapter={AdapterDateFns} locale={ruLocale}>
-          <DatePicker
-            mask={'__.__.____'}
-            label="Basic example"
-            value={date}
-            onChange={(newVal) => onSetDate(newVal)}
-            renderInput={(params) => <TextField {...params} />}
-          />
-        </LocalizationProvider>
+            <ButtonGroup variant="contained" aria-label="outlined primary button group">
+              <Button onClick={(e) => onAddDate(-1)} >One</Button>
+              <Button onClick={(e) => onAddDate(1)} >Two</Button>
+            </ButtonGroup>
 
-        <ButtonGroup variant="contained" aria-label="outlined primary button group">
-          <Button onClick={(e) => onAddDate(-1)} >One</Button>         
-          <Button onClick={(e) => onAddDate(1)} >Two</Button>
-        </ButtonGroup>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={range}
+              label="Age"
+              onChange={(e) => onSetRange(e.target.value)}
+            >
+              <MenuItem value={2}>2</MenuItem>
+              <MenuItem value={5}>5</MenuItem>
+              <MenuItem value={10}>10</MenuItem>
+            </Select>
 
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={range}
-          label="Age"
-          onChange={(e) => onSetRange(e.target.value)}
-        >
-          <MenuItem value={2}>2</MenuItem>
-          <MenuItem value={5}>5</MenuItem>
-          <MenuItem value={10}>10</MenuItem>
-        </Select>
+          </div>
+          <div className="wrpSvg">
+            <SvgChart options={options} axis={axis} dataSets={dataSets} />
+          </div>
 
-      </div>
-      <div className="wrpSvg">
-        <SvgChart options={options} axis={axis} dataSets={dataSets} />
-      </div>
-
-    </div>
+        </div>
+      </Provider>
+    </React.StrictMode>
   );
 }
 

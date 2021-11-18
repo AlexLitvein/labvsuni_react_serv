@@ -9,7 +9,8 @@ const express = require('express'),
   logger = require('morgan'),
   errorHandler = require('errorhandler'),
   compression = require('compression'),
-  url = 'mongodb://localhost:27017',
+  // url = 'mongodb://localhost:27017',
+  url = 'mongodb://labvsuni:lab@134.90.161.173:27617',
   ReactDOMServer = require('react-dom/server'),
   React = require('react');
 
@@ -23,7 +24,7 @@ app.set('view engine', 'hbs');
 // const Footer = require('./components/footer.jsx')
 // const MessageBoard = require('./components/board.jsx');
 // const { default: SvgChart } = require('./components/SvgChart.js');
-const { default: App } = require('./client/App.js');
+const { default: App } = require('./client/App.jsx');
 
 const axis = {
   _id: { name: 'Дата', min: 0, max: 0, type: 'H', cls: 'axis', clrPath: '#000ff00' },
@@ -32,7 +33,7 @@ const axis = {
   h: { name: 'Влажность', min: 0, max: 100, type: 'V', cls: 'axis', clrPath: '#FFFA40' },
 };
   
-const options = {
+const options = { 
   padding: { top: 20, right: 10, bottom: 60, left: 30 },
   countVLabels: 3,
   axisTxtOffs: 8,
