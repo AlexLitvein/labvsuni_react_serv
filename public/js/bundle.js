@@ -36961,6 +36961,308 @@ var remote_data = [data1, data2, data3]; //
 
 /***/ }),
 
+/***/ "./client/app.jsx":
+/*!************************!*\
+  !*** ./client/app.jsx ***!
+  \************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _store_DataController__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./store/DataController */ "./client/store/DataController.js");
+/* harmony import */ var _components_SvgChart__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/SvgChart */ "./client/components/SvgChart.js");
+/* harmony import */ var _dataRdcrs_paths__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./dataRdcrs/paths */ "./client/dataRdcrs/paths.js");
+/* harmony import */ var _mui_material_TextField__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @mui/material/TextField */ "./node_modules/@mui/material/TextField/TextField.js");
+/* harmony import */ var _mui_lab_AdapterDateFns__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @mui/lab/AdapterDateFns */ "./node_modules/@date-io/date-fns/build/index.esm.js");
+/* harmony import */ var _mui_lab_LocalizationProvider__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @mui/lab/LocalizationProvider */ "./node_modules/@mui/lab/LocalizationProvider/LocalizationProvider.js");
+/* harmony import */ var _mui_lab_DatePicker__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @mui/lab/DatePicker */ "./node_modules/@mui/lab/DatePicker/DatePicker.js");
+/* harmony import */ var date_fns_locale_ru__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! date-fns/locale/ru */ "./node_modules/date-fns/esm/locale/ru/index.js");
+/* harmony import */ var _mui_material_ButtonGroup__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @mui/material/ButtonGroup */ "./node_modules/@mui/material/ButtonGroup/ButtonGroup.js");
+/* harmony import */ var _mui_material_Button__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @mui/material/Button */ "./node_modules/@mui/material/Button/Button.js");
+/* harmony import */ var _mui_material_MenuItem__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @mui/material/MenuItem */ "./node_modules/@mui/material/MenuItem/MenuItem.js");
+/* harmony import */ var _mui_material_Select__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @mui/material/Select */ "./node_modules/@mui/material/Select/Select.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+// var isServ = false;
+
+ // if (!isServ) {
+//   import('./css/style.css').then((something) => {
+//     console.log("import App.css");
+//   });
+// }
+// const React = require('react')
+// const ReactDOM = require('react-dom')
+// import { Provider } from 'react-redux';
+
+ // if (process.env.APP_PROCESS === 'webpack') {
+//   import( './App.css').then(() => {
+//     console.log("import App.css");
+//  });
+// }
+
+
+
+
+
+
+
+
+
+ // import InputLabel from '@mui/material/InputLabel';
+
+
+ // import {DatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
+// import AdapterDateFns from '@date-io/date-fns';
+// const localeMap = {
+//   ru: ruLocale,
+// };
+
+var axis = {
+  _id: {
+    name: 'Дата',
+    min: 0,
+    max: 0,
+    type: 'H',
+    cls: 'axis',
+    clrPath: '#000ff00'
+  },
+  t: {
+    name: 'Температура',
+    min: -50,
+    max: 50,
+    type: 'V',
+    cls: 'axis',
+    clrPath: '#FF0000'
+  },
+  p: {
+    name: 'Давление',
+    min: 0,
+    max: 1000,
+    type: 'V',
+    cls: 'axis',
+    clrPath: '#4F4FD9'
+  },
+  h: {
+    name: 'Влажность',
+    min: 0,
+    max: 100,
+    type: 'V',
+    cls: 'axis',
+    clrPath: '#FFFA40'
+  }
+}; // const marker
+
+var options = {
+  padding: {
+    top: 20,
+    right: 10,
+    bottom: 60,
+    left: 30
+  },
+  // fontH: 10, //?
+  countVLabels: 3,
+  axisTxtOffs: 8 // fontBBoxHeight: 0,
+  // biggestDataStrBBoxWidth: 0,  
+  // svgElm: null,
+  // rcClient: null,
+  // numHSeg: 0,
+  // lnHSeg: 0, 
+  // lnVSeg: 0,
+
+};
+
+function requestSensDataUrlencoded(data, range) {
+  // if (document.forms[0].checkValidity()) {
+  var body = 'startData=' + encodeURIComponent(data) + '&range=' + encodeURIComponent(range);
+  var xhr = new XMLHttpRequest();
+  xhr.timeout = 3000; // (в миллисекундах)
+
+  xhr.open('POST', '/weather/getSensData', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send(body);
+
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {// mArrDbData = JSON.parse(this.responseText);
+      //if (mArrDbData.length !== 0) {
+      //console.log('m_arrDbData len: %d', mArrDbData.length);
+      // Draw();
+      // mGraph.drawGraph(mArrDbData, parseInt(range));
+      //}
+    }
+  }; // }
+
+}
+
+function fetchJson(url) {
+  return fetch(url).then(function (request) {
+    return request.text();
+  }).then(function (text) {
+    return JSON.parse(text);
+  })["catch"](function (error) {
+    console.log();
+  });
+} // TODO: перенести статус загрузки в pathRdcr
+
+
+function App() {
+  var dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useDispatch)();
+  var dataSets = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useSelector)(_dataRdcrs_paths__WEBPACK_IMPORTED_MODULE_4__.selDataSets);
+
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(Date.now()),
+      _useState2 = _slicedToArray(_useState, 2),
+      date = _useState2[0],
+      setDate = _useState2[1]; //1635839818003
+
+
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(2),
+      _useState4 = _slicedToArray(_useState3, 2),
+      range = _useState4[0],
+      setRange = _useState4[1]; // NOTE! входные данные массив объектов, например: 
+  // [
+  //      { d: '2021-11-05', t: 21.2, p: 36.9, h: 12.5 },
+  //      { d: '2021-11-05', t: 21.2, p: 36.9, h: 12.5 },
+  //      { d: '2021-11-05', t: 21.2, p: 36.9, h: 12.5 },
+  // ]
+  // функция возвращает объект со свойствами массивами
+  // { 
+  //      _id: ['2021-11-05', ...], 
+  //      t: [21.2, ...],
+  //      p: [36.9 ...],
+  //      h: [12.5 ...]
+  // }
+
+
+  var convertArrObjectsToObjectPropertyArrays = function convertArrObjectsToObjectPropertyArrays(arrObjects) {
+    var out = {};
+
+    if (arrObjects.length !== 0) {
+      var o = arrObjects[0];
+
+      for (var key in o) {
+        out[key] = [];
+      }
+
+      arrObjects.forEach(function (el) {
+        for (var _key in el) {
+          out[_key].push(el[_key]);
+        }
+      });
+    }
+
+    return out;
+  };
+
+  var fetchDataRange = function fetchDataRange(date, range) {
+    // console.log(date);
+    dispatch((0,_dataRdcrs_paths__WEBPACK_IMPORTED_MODULE_4__.getSensData)({
+      date: new Date(date).getDate() - 1,
+      range: range,
+      func: convertArrObjectsToObjectPropertyArrays
+    }));
+  };
+
+  var addDateDay = function addDateDay(date, add) {
+    var dt = new Date(date);
+    dt.setDate(dt.getDate() + add);
+    return dt;
+  };
+
+  var onSetDate = function onSetDate(date) {
+    var add = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+    setDate(date);
+    fetchDataRange(date, range);
+  };
+
+  var onSetRange = function onSetRange(range) {
+    setRange(range);
+    fetchDataRange(date, range);
+  };
+
+  var onAddDate = function onAddDate(add) {
+    setDate(function (prev) {
+      var res = addDateDay(prev, add);
+      fetchDataRange(res, range);
+      return res;
+    });
+  };
+
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    console.log("App useEffect");
+    fetchDataRange(date, range);
+  }, []); // componentDidMount()
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.StrictMode, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_redux__WEBPACK_IMPORTED_MODULE_1__.Provider, {
+    store: _store_DataController__WEBPACK_IMPORTED_MODULE_2__["default"]
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "App"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    id: "controls"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_lab_LocalizationProvider__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    dateAdapter: _mui_lab_AdapterDateFns__WEBPACK_IMPORTED_MODULE_6__["default"],
+    locale: date_fns_locale_ru__WEBPACK_IMPORTED_MODULE_7__["default"]
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_lab_DatePicker__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    mask: '__.__.____',
+    label: "Basic example",
+    value: date,
+    onChange: function onChange(newVal) {
+      return onSetDate(newVal);
+    },
+    renderInput: function renderInput(params) {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material_TextField__WEBPACK_IMPORTED_MODULE_9__["default"], params);
+    }
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material_ButtonGroup__WEBPACK_IMPORTED_MODULE_10__["default"], {
+    variant: "contained",
+    "aria-label": "outlined primary button group"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material_Button__WEBPACK_IMPORTED_MODULE_11__["default"], {
+    onClick: function onClick(e) {
+      return onAddDate(-1);
+    }
+  }, "One"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material_Button__WEBPACK_IMPORTED_MODULE_11__["default"], {
+    onClick: function onClick(e) {
+      return onAddDate(1);
+    }
+  }, "Two")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material_Select__WEBPACK_IMPORTED_MODULE_12__["default"], {
+    labelId: "demo-simple-select-label",
+    id: "demo-simple-select",
+    value: range,
+    label: "Age",
+    onChange: function onChange(e) {
+      return onSetRange(e.target.value);
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material_MenuItem__WEBPACK_IMPORTED_MODULE_13__["default"], {
+    value: 2
+  }, "2"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material_MenuItem__WEBPACK_IMPORTED_MODULE_13__["default"], {
+    value: 5
+  }, "5"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material_MenuItem__WEBPACK_IMPORTED_MODULE_13__["default"], {
+    value: 10
+  }, "10"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "wrpSvg"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_SvgChart__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    options: options,
+    axis: axis,
+    dataSets: dataSets
+  })))));
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (App);
+
+/***/ }),
+
 /***/ "./node_modules/clsx/dist/clsx.m.js":
 /*!******************************************!*\
   !*** ./node_modules/clsx/dist/clsx.m.js ***!
@@ -84761,303 +85063,32 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
 (() => {
 "use strict";
-/*!************************!*\
-  !*** ./client/app.jsx ***!
-  \************************/
+/*!**************************!*\
+  !*** ./client/index.jsx ***!
+  \**************************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var _css_style_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./css/style.css */ "./client/css/style.css");
-/* harmony import */ var _store_DataController__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./store/DataController */ "./client/store/DataController.js");
-/* harmony import */ var _components_SvgChart__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/SvgChart */ "./client/components/SvgChart.js");
-/* harmony import */ var _dataRdcrs_paths__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./dataRdcrs/paths */ "./client/dataRdcrs/paths.js");
-/* harmony import */ var _mui_material_TextField__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @mui/material/TextField */ "./node_modules/@mui/material/TextField/TextField.js");
-/* harmony import */ var _mui_lab_AdapterDateFns__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @mui/lab/AdapterDateFns */ "./node_modules/@date-io/date-fns/build/index.esm.js");
-/* harmony import */ var _mui_lab_LocalizationProvider__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @mui/lab/LocalizationProvider */ "./node_modules/@mui/lab/LocalizationProvider/LocalizationProvider.js");
-/* harmony import */ var _mui_lab_DatePicker__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @mui/lab/DatePicker */ "./node_modules/@mui/lab/DatePicker/DatePicker.js");
-/* harmony import */ var date_fns_locale_ru__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! date-fns/locale/ru */ "./node_modules/date-fns/esm/locale/ru/index.js");
-/* harmony import */ var _mui_material_ButtonGroup__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @mui/material/ButtonGroup */ "./node_modules/@mui/material/ButtonGroup/ButtonGroup.js");
-/* harmony import */ var _mui_material_Button__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @mui/material/Button */ "./node_modules/@mui/material/Button/Button.js");
-/* harmony import */ var _mui_material_MenuItem__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @mui/material/MenuItem */ "./node_modules/@mui/material/MenuItem/MenuItem.js");
-/* harmony import */ var _mui_material_Select__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @mui/material/Select */ "./node_modules/@mui/material/Select/Select.js");
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+/* harmony import */ var _app_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./app.jsx */ "./client/app.jsx");
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-var isServ = false;
-
- // if (!isServ) {
-//   import('./css/style.css').then((something) => {
-//     console.log("import App.css");
-//   });
-// }
-
- // const React = require('react')
-// const ReactDOM = require('react-dom')
-// import { Provider } from 'react-redux';
-
- // if (process.env.APP_PROCESS === 'webpack') {
-//   import( './App.css').then(() => {
-//     console.log("import App.css");
-//  });
-// }
+ // import { Provider } from 'react-redux';
+// import MyStore from './store/DataController';
+// import './index.css';
 
 
+ // import reportWebVitals from './reportWebVitals';
 
-
-
-
-
-
-
- // import InputLabel from '@mui/material/InputLabel';
-
-
- // import {DatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
-// import AdapterDateFns from '@date-io/date-fns';
-// const localeMap = {
-//   ru: ruLocale,
-// };
-
-var axis = {
-  _id: {
-    name: 'Дата',
-    min: 0,
-    max: 0,
-    type: 'H',
-    cls: 'axis',
-    clrPath: '#000ff00'
-  },
-  t: {
-    name: 'Температура',
-    min: -50,
-    max: 50,
-    type: 'V',
-    cls: 'axis',
-    clrPath: '#FF0000'
-  },
-  p: {
-    name: 'Давление',
-    min: 0,
-    max: 1000,
-    type: 'V',
-    cls: 'axis',
-    clrPath: '#4F4FD9'
-  },
-  h: {
-    name: 'Влажность',
-    min: 0,
-    max: 100,
-    type: 'V',
-    cls: 'axis',
-    clrPath: '#FFFA40'
-  }
-}; // const marker
-
-var options = {
-  padding: {
-    top: 20,
-    right: 10,
-    bottom: 60,
-    left: 30
-  },
-  // fontH: 10, //?
-  countVLabels: 3,
-  axisTxtOffs: 8 // fontBBoxHeight: 0,
-  // biggestDataStrBBoxWidth: 0,  
-  // svgElm: null,
-  // rcClient: null,
-  // numHSeg: 0,
-  // lnHSeg: 0, 
-  // lnVSeg: 0,
-
-};
-
-function requestSensDataUrlencoded(data, range) {
-  // if (document.forms[0].checkValidity()) {
-  var body = 'startData=' + encodeURIComponent(data) + '&range=' + encodeURIComponent(range);
-  var xhr = new XMLHttpRequest();
-  xhr.timeout = 3000; // (в миллисекундах)
-
-  xhr.open('POST', '/weather/getSensData', true);
-  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  xhr.send(body);
-
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {// mArrDbData = JSON.parse(this.responseText);
-      //if (mArrDbData.length !== 0) {
-      //console.log('m_arrDbData len: %d', mArrDbData.length);
-      // Draw();
-      // mGraph.drawGraph(mArrDbData, parseInt(range));
-      //}
-    }
-  }; // }
-
-}
-
-function fetchJson(url) {
-  return fetch(url).then(function (request) {
-    return request.text();
-  }).then(function (text) {
-    return JSON.parse(text);
-  })["catch"](function (error) {
-    console.log();
-  });
-} // TODO: перенести статус загрузки в pathRdcr
-
-
-function App() {
-  var dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useDispatch)();
-  var dataSets = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useSelector)(_dataRdcrs_paths__WEBPACK_IMPORTED_MODULE_5__.selDataSets);
-
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(Date.now()),
-      _useState2 = _slicedToArray(_useState, 2),
-      date = _useState2[0],
-      setDate = _useState2[1]; //1635839818003
-
-
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(2),
-      _useState4 = _slicedToArray(_useState3, 2),
-      range = _useState4[0],
-      setRange = _useState4[1]; // NOTE! входные данные массив объектов, например: 
-  // [
-  //      { d: '2021-11-05', t: 21.2, p: 36.9, h: 12.5 },
-  //      { d: '2021-11-05', t: 21.2, p: 36.9, h: 12.5 },
-  //      { d: '2021-11-05', t: 21.2, p: 36.9, h: 12.5 },
-  // ]
-  // функция возвращает объект со свойствами массивами
-  // { 
-  //      _id: ['2021-11-05', ...], 
-  //      t: [21.2, ...],
-  //      p: [36.9 ...],
-  //      h: [12.5 ...]
-  // }
-
-
-  var convertArrObjectsToObjectPropertyArrays = function convertArrObjectsToObjectPropertyArrays(arrObjects) {
-    var out = {};
-
-    if (arrObjects.length !== 0) {
-      var o = arrObjects[0];
-
-      for (var key in o) {
-        out[key] = [];
-      }
-
-      arrObjects.forEach(function (el) {
-        for (var _key in el) {
-          out[_key].push(el[_key]);
-        }
-      });
-    }
-
-    return out;
-  };
-
-  var fetchDataRange = function fetchDataRange(date, range) {
-    // console.log(date);
-    dispatch((0,_dataRdcrs_paths__WEBPACK_IMPORTED_MODULE_5__.getSensData)({
-      date: new Date(date).getDate() - 1,
-      range: range,
-      func: convertArrObjectsToObjectPropertyArrays
-    }));
-  };
-
-  var addDateDay = function addDateDay(date, add) {
-    var dt = new Date(date);
-    dt.setDate(dt.getDate() + add);
-    return dt;
-  };
-
-  var onSetDate = function onSetDate(date) {
-    var add = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-    setDate(date);
-    fetchDataRange(date, range);
-  };
-
-  var onSetRange = function onSetRange(range) {
-    setRange(range);
-    fetchDataRange(date, range);
-  };
-
-  var onAddDate = function onAddDate(add) {
-    setDate(function (prev) {
-      var res = addDateDay(prev, add);
-      fetchDataRange(res, range);
-      return res;
-    });
-  };
-
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    console.log("App useEffect");
-    fetchDataRange(date, range);
-  }, []); // componentDidMount()
-
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.StrictMode, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_redux__WEBPACK_IMPORTED_MODULE_1__.Provider, {
-    store: _store_DataController__WEBPACK_IMPORTED_MODULE_3__["default"]
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    className: "App"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    id: "controls"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_lab_LocalizationProvider__WEBPACK_IMPORTED_MODULE_6__["default"], {
-    dateAdapter: _mui_lab_AdapterDateFns__WEBPACK_IMPORTED_MODULE_7__["default"],
-    locale: date_fns_locale_ru__WEBPACK_IMPORTED_MODULE_8__["default"]
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_lab_DatePicker__WEBPACK_IMPORTED_MODULE_9__["default"], {
-    mask: '__.__.____',
-    label: "Basic example",
-    value: date,
-    onChange: function onChange(newVal) {
-      return onSetDate(newVal);
-    },
-    renderInput: function renderInput(params) {
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material_TextField__WEBPACK_IMPORTED_MODULE_10__["default"], params);
-    }
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material_ButtonGroup__WEBPACK_IMPORTED_MODULE_11__["default"], {
-    variant: "contained",
-    "aria-label": "outlined primary button group"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material_Button__WEBPACK_IMPORTED_MODULE_12__["default"], {
-    onClick: function onClick(e) {
-      return onAddDate(-1);
-    }
-  }, "One"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material_Button__WEBPACK_IMPORTED_MODULE_12__["default"], {
-    onClick: function onClick(e) {
-      return onAddDate(1);
-    }
-  }, "Two")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material_Select__WEBPACK_IMPORTED_MODULE_13__["default"], {
-    labelId: "demo-simple-select-label",
-    id: "demo-simple-select",
-    value: range,
-    label: "Age",
-    onChange: function onChange(e) {
-      return onSetRange(e.target.value);
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material_MenuItem__WEBPACK_IMPORTED_MODULE_14__["default"], {
-    value: 2
-  }, "2"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material_MenuItem__WEBPACK_IMPORTED_MODULE_14__["default"], {
-    value: 5
-  }, "5"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material_MenuItem__WEBPACK_IMPORTED_MODULE_14__["default"], {
-    value: 10
-  }, "10"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    className: "wrpSvg"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_SvgChart__WEBPACK_IMPORTED_MODULE_4__["default"], {
-    options: options,
-    axis: axis,
-    dataSets: dataSets
-  })))));
-}
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (App);
+react_dom__WEBPACK_IMPORTED_MODULE_1__.render(
+/*#__PURE__*/
+// <React.StrictMode>
+//   <Provider store={MyStore}>
+react__WEBPACK_IMPORTED_MODULE_0__.createElement(_app_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], null), //   </Provider>
+// </React.StrictMode>,
+document.getElementById('root')); // If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+// reportWebVitals();
 })();
 
 /******/ })()

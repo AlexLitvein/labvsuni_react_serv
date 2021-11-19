@@ -1,6 +1,7 @@
-require('@babel/register')({
-  presets: ['@babel/preset-react']
-})
+// TODO: @babel/register
+// require('@babel/register')({
+//   presets: ['@babel/preset-react']
+// })
 
 const express = require('express'),
   mongodb = require('mongodb'),
@@ -24,7 +25,7 @@ app.set('view engine', 'hbs');
 // const Footer = require('./components/footer.jsx')
 // const MessageBoard = require('./components/board.jsx');
 // const { default: SvgChart } = require('./components/SvgChart.js');
-const { default: App } = require('./client/App.jsx');
+// const { default: App } = require('./client/App.jsx');
 
 const axis = {
   _id: { name: 'Дата', min: 0, max: 0, type: 'H', cls: 'axis', clrPath: '#000ff00' },
@@ -93,12 +94,12 @@ mongodb.MongoClient.connect(url, function (err, client) {
   //     })   
   // })
 
-  app.get('/', (req, res, next) => {    
-    res.render('index', {       
-      chart: ReactDOMServer.renderToString(React.createElement(App , { store: {} })),
+//   app.get('/', (req, res, next) => {    
+//     res.render('index', {       
+//       chart: ReactDOMServer.renderToString(React.createElement(App , { store: {} })),
      
-    })   
-})
+//     })   
+// })
 
   // app.get('/', (req, res, next) => {
   //   // console.log(req.messages);

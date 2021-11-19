@@ -1,4 +1,4 @@
-var isServ = false;
+// var isServ = false;
 
 import React, { useState, useEffect } from 'react';
 import { Provider, useDispatch, useSelector } from 'react-redux';
@@ -7,7 +7,9 @@ import { Provider, useDispatch, useSelector } from 'react-redux';
 //     console.log("import App.css");
 //   });
 // }
-import './css/style.css';
+
+
+
 // const React = require('react')
 // const ReactDOM = require('react-dom')
 // import { Provider } from 'react-redux';

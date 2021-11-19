@@ -77,7 +77,7 @@ module.exports = {
   mode: 'development',
   entry: {
     // main: ['./client/app.jsx'],
-    main: './client/app.jsx',
+    main: './client/index.jsx',
   },
   output: {
     path: path.resolve(__dirname, 'public/js/'),
