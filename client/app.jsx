@@ -1,7 +1,8 @@
 // var isServ = false;
 
 import React, { useState, useEffect } from 'react';
-import { Provider, useDispatch, useSelector } from 'react-redux';
+// import { Provider, useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 // if (!isServ) {
 //   import('./css/style.css').then((something) => {
 //     console.log("import App.css");
@@ -13,7 +14,7 @@ import { Provider, useDispatch, useSelector } from 'react-redux';
 // const React = require('react')
 // const ReactDOM = require('react-dom')
 // import { Provider } from 'react-redux';
-import MyStore from './store/DataController';
+// import MyStore from './store/DataController';
 
 // if (process.env.APP_PROCESS === 'webpack') {
 //   import( './App.css').then(() => {
@@ -180,8 +181,8 @@ function App() {
   }, []); // componentDidMount()
 
   return (
-    <React.StrictMode>
-      <Provider store={MyStore}>
+    // <React.StrictMode>
+    //   <Provider store={MyStore}>
         <div className="App">
           <div id="controls">
             <LocalizationProvider dateAdapter={AdapterDateFns} locale={ruLocale}>
@@ -217,8 +218,8 @@ function App() {
           </div>
 
         </div>
-      </Provider>
-    </React.StrictMode>
+    //   </Provider>
+    // </React.StrictMode>
   );
 }
 

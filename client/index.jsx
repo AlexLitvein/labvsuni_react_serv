@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import { Provider } from 'react-redux';
-// import MyStore from './store/DataController';
+import { Provider } from 'react-redux';
+import MyStore from './store/DataController';
 // import './index.css';
 import './css/style.css';
 import App from './app.jsx';
@@ -11,11 +11,11 @@ import App from './app.jsx';
 
 
 ReactDOM.render(
-  // <React.StrictMode>
-  //   <Provider store={MyStore}>
-      <App />,
-  //   </Provider>
-  // </React.StrictMode>,
+  <React.StrictMode>
+    <Provider store={MyStore}>
+      <App />
+    </Provider>
+  </React.StrictMode>,
   document.getElementById('root')
 );
 
