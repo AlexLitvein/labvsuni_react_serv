@@ -147,7 +147,7 @@ function App() {
   }
 
   const fetchData = (date, range) => {
-    console.log(date);
+    // console.log(date);
     // dispatch(getSensData({ date: new Date(date), range: range, func: convertArrObjectsToObjectPropertyArrays }));
     dispatch(getSensData({ date: date, range: range, func: convertArrObjectsToObjectPropertyArrays }));
   }

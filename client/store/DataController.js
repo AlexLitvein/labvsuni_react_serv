@@ -42,7 +42,7 @@ function* fetchSensData(act) { // act = { date, count, func }
         const receivedData = yield fetchJson('http://localhost:3000/weather/getSensData', act.payload.date, act.payload.range);
         console.log('receivedData', receivedData);
         const data = yield call(act.payload.func, receivedData);
-        yield delay(1000);
+        // yield delay(1000);
         yield put(setDataSet(data)); //{ data }
         // yield put(setLoaded());
     } catch (e) {

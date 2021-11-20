@@ -36791,28 +36791,24 @@ function fetchSensData(act) {
         case 7:
           data = _context.sent;
           _context.next = 10;
-          return delay(1000);
-
-        case 10:
-          _context.next = 12;
           return put((0,_dataRdcrs_paths__WEBPACK_IMPORTED_MODULE_6__.setDataSet)(data));
 
-        case 12:
-          _context.next = 18;
+        case 10:
+          _context.next = 16;
           break;
 
-        case 14:
-          _context.prev = 14;
+        case 12:
+          _context.prev = 12;
           _context.t0 = _context["catch"](0);
-          _context.next = 18;
+          _context.next = 16;
           return put((0,_rdcrs_status_acts__WEBPACK_IMPORTED_MODULE_4__.setError)(_context.t0.message));
 
-        case 18:
+        case 16:
         case "end":
           return _context.stop();
       }
     }
-  }, _marked, null, [[0, 14]]);
+  }, _marked, null, [[0, 12]]);
 }
 
 ;
@@ -37203,8 +37199,8 @@ function App() {
   };
 
   var fetchData = function fetchData(date, range) {
-    console.log(date); // dispatch(getSensData({ date: new Date(date), range: range, func: convertArrObjectsToObjectPropertyArrays }));
-
+    // console.log(date);
+    // dispatch(getSensData({ date: new Date(date), range: range, func: convertArrObjectsToObjectPropertyArrays }));
     dispatch((0,_dataRdcrs_paths__WEBPACK_IMPORTED_MODULE_4__.getSensData)({
       date: date,
       range: range,
