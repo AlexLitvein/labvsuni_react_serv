@@ -15,7 +15,7 @@ const express = require('express'),
   ReactDOMServer = require('react-dom/server'),
   React = require('react');
 
-  const { body, validationResult } = require('express-validator');
+const { body, validationResult } = require('express-validator');
 
 const exphbs = require('express-handlebars');
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }));
@@ -33,15 +33,15 @@ const axis = {
   p: { name: 'Давление', min: 0, max: 1000, type: 'V', cls: 'axis', clrPath: '#4F4FD9' },
   h: { name: 'Влажность', min: 0, max: 100, type: 'V', cls: 'axis', clrPath: '#FFFA40' },
 };
-  
-const options = { 
+
+const options = {
   padding: { top: 20, right: 10, bottom: 60, left: 30 },
   countVLabels: 3,
   axisTxtOffs: 8,
 };
 
 mongodb.MongoClient.connect(url, function (err, client) {
-// mongodb.MongoClient.connect(url, (err, db) => {
+  // mongodb.MongoClient.connect(url, (err, db) => {
   if (err) {
     console.error(err)
     process.exit(1)
@@ -57,49 +57,62 @@ mongodb.MongoClient.connect(url, function (err, client) {
   // app.use(validator())
   app.use(express.static('public'))
 
-  app.use((req, res, next) => {
-    req.messages = db.collection('sensData_2021');
-    return next()
-  })
+  // app.use((req, res, next) => {
+  //   req.messages = db.collection('sensData_2021');
+  //   return next()
+  // })
 
-  // app.get('/getSensData', (req, res, next) => {
-  //   console.log(req.body);
-  //   return 0;
-  // req.messages.find({}, { sort: { _id: -1 } }).toArray((err, docs) => {
+  app.post('/weather/getSensData', (req, res, next) => {
+
+    const date = new Date(req.body.startData);
+    date.setHours(0);
+    const range = parseInt(req.body.range);
+    // console.log('req data: %s %d', date, range); 
+    console.log(`date: ${date}, range: ${range}`);
+
+    const collName = 'sensData_' + date.getFullYear();
+    db.collection(collName, function (err, items) {
+      if (err) throw err;
+      items.find({ _id: { $gte: date } }, { limit: (range * 24) + 1, sort: { _id: 1 } },
+        function (err, cursor) {
+          if (err) throw err;
+          cursor.toArray(function (err, itemArr) {
+            if (err) throw err;
+            res.json(itemArr);
+          });
+        });
+    });
+  });
+
+  // app.post('/messages', (req, res, next) => {
+  //   console.log(req.body)
+  // req.checkBody('message', 'Invalid message in body').notEmpty()
+  // req.checkBody('name', 'Invalid name in body').notEmpty()
+  // let newMessage = {
+  //   message: req.body.message,
+  //   name: req.body.name
+  // }
+  // let errors = req.validationErrors()
+  // if (errors) return next(errors)
+  // req.messages.insert(newMessage, (err, result) => {
   //   if (err) return next(err)
-  //   return res.json(docs)
+  //   return res.json(result.ops[0])
   // })
   // })
-
-  app.post('/messages', (req, res, next) => {
-    console.log(req.body)
-    // req.checkBody('message', 'Invalid message in body').notEmpty()
-    // req.checkBody('name', 'Invalid name in body').notEmpty()
-    // let newMessage = {
-    //   message: req.body.message,
-    //   name: req.body.name
-    // }
-    // let errors = req.validationErrors()
-    // if (errors) return next(errors)
-    // req.messages.insert(newMessage, (err, result) => {
-    //   if (err) return next(err)
-    //   return res.json(result.ops[0])
-    // })
-  })
 
   // app.get('/', (req, res, next) => {    
   //     res.render('index', {       
   //       chart: ReactDOMServer.renderToString(React.createElement(SvgChart , { options: options, axis: axis })),
-       
+
   //     })   
   // })
 
-//   app.get('/', (req, res, next) => {    
-//     res.render('index', {       
-//       chart: ReactDOMServer.renderToString(React.createElement(App , { store: {} })),
-     
-//     })   
-// })
+  //   app.get('/', (req, res, next) => {    
+  //     res.render('index', {       
+  //       chart: ReactDOMServer.renderToString(React.createElement(App , { store: {} })),
+
+  //     })   
+  // })
 
   // app.get('/', (req, res, next) => {
   //   // console.log(req.messages);

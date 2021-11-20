@@ -20,7 +20,7 @@ export const setDataSet = (payload) => {
     }
 };
 
-export const getSensData = (payload,) => { // date, count, func
+export const getSensData = (payload) => { // date, count, func
     console.log('act getSensData');
     return {
         type: GET_SENS_DATA,
@@ -47,7 +47,7 @@ export const selDataSets = (state) => state.chartData.dataSets;
 export const selText = (state) => state.chartData.text;
 
 export function dataSetsRdcr(state = initialState, action) {
-    console.log('pathRdcr', action);
+    console.log('dataSetsRdcr', action);
 
     switch (action.type) {
         case SET_TEXT:

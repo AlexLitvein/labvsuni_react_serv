@@ -6,6 +6,25 @@ import { remote_data } from './remoteData';
 import { GET_SENS_DATA, dataSetsRdcr, setDataSet, setPath } from '../dataRdcrs/paths';
 const { call, put, takeLatest, delay } = require('redux-saga/effects');
 
+async function fetchJson(url, date, range) {
+    let data = {};
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify({ startData: date, range: range })
+    });
+
+    if (res.ok) { // если HTTP-статус в диапазоне 200-299        
+        data = await res.json(); // получаем тело ответа (см. про этот метод ниже)
+    } else {
+        console.log("Ошибка HTTP: " + response.status);
+    }
+
+    return data;
+}
+
 const rootReducer = combineReducers({
     chartData: dataSetsRdcr,
     status: statusRdcr
@@ -19,11 +38,12 @@ function* fetchSensData(act) { // act = { date, count, func }
     // console.log('fetchSensData', act);
     try {
         // yield put(setLoading());
-        const receivedData = yield remote_data[act.payload.date].slice(0,act.payload.range);
-        // console.log('receivedData', receivedData);
+        // const receivedData = yield remote_data[act.payload.date].slice(0, act.payload.range);
+        const receivedData = yield fetchJson('http://localhost:3000/weather/getSensData', act.payload.date, act.payload.range);
+        console.log('receivedData', receivedData);
         const data = yield call(act.payload.func, receivedData);
         yield delay(1000);
-        yield put(setDataSet( data )); //{ data }
+        yield put(setDataSet(data)); //{ data }
         // yield put(setLoaded());
     } catch (e) {
         yield put(setError(e.message));

@@ -93,16 +93,18 @@ function requestSensDataUrlencoded(data, range) {
   // }
 }
 
-function fetchJson(url) {
-  return fetch(url)
-    .then(request => request.text())
-    .then(text => {
-      return JSON.parse(text);
-    })
-    .catch(error => {
-      console.log();
-    });
-}
+// function fetchJson(url) {
+//   return fetch(url)
+//     .then(request => request.text())
+//     .then(text => {
+//       return JSON.parse(text);
+//     })
+//     .catch(error => {
+//       console.log();
+//     });
+// }
+
+
 
 // TODO: перенести статус загрузки в pathRdcr
 function App() {
@@ -110,7 +112,7 @@ function App() {
   const dataSets = useSelector(selDataSets);
 
 
-  const [date, setDate] = useState(Date.now());//1635839818003
+  const [date, setDate] = useState(new Date(Date.now()));
   const [range, setRange] = useState(2);
 
 
@@ -144,9 +146,10 @@ function App() {
     return out;
   }
 
-  const fetchDataRange = (date, range) => {
-    // console.log(date);
-    dispatch(getSensData({ date: new Date(date).getDate() - 1, range: range, func: convertArrObjectsToObjectPropertyArrays }));
+  const fetchData = (date, range) => {
+    console.log(date);
+    // dispatch(getSensData({ date: new Date(date), range: range, func: convertArrObjectsToObjectPropertyArrays }));
+    dispatch(getSensData({ date: date, range: range, func: convertArrObjectsToObjectPropertyArrays }));
   }
 
   const addDateDay = (date, add) => {
@@ -157,18 +160,18 @@ function App() {
 
   const onSetDate = (date, add = 0) => {
     setDate(date);
-    fetchDataRange(date, range);
+    fetchData(date, range);
   }
 
   const onSetRange = (range) => {
     setRange(range);
-    fetchDataRange(date, range);
+    fetchData(date, range);
   }
 
   const onAddDate = (add) => {
     setDate((prev) => {
       const res = addDateDay(prev, add);
-      fetchDataRange(res, range);
+      fetchData(res, range);
       return res;
     });
   }
@@ -177,47 +180,47 @@ function App() {
 
   useEffect(() => {
     console.log("App useEffect");
-    fetchDataRange(date, range);
+    fetchData(date, range);
   }, []); // componentDidMount()
 
   return (
     // <React.StrictMode>
     //   <Provider store={MyStore}>
-        <div className="App">
-          <div id="controls">
-            <LocalizationProvider dateAdapter={AdapterDateFns} locale={ruLocale}>
-              <DatePicker
-                mask={'__.__.____'}
-                label="Basic example"
-                value={date}
-                onChange={(newVal) => onSetDate(newVal)}
-                renderInput={(params) => <TextField {...params} />}
-              />
-            </LocalizationProvider>
+    <div className="App">
+      <div id="controls">
+        <LocalizationProvider dateAdapter={AdapterDateFns} locale={ruLocale}>
+          <DatePicker
+            mask={'__.__.____'}
+            label="Basic example"
+            value={date}
+            onChange={(newVal) => onSetDate(newVal)}
+            renderInput={(params) => <TextField {...params} />}
+          />
+        </LocalizationProvider>
 
-            <ButtonGroup variant="contained" aria-label="outlined primary button group">
-              <Button onClick={(e) => onAddDate(-1)} >One</Button>
-              <Button onClick={(e) => onAddDate(1)} >Two</Button>
-            </ButtonGroup>
+        <ButtonGroup variant="contained" aria-label="outlined primary button group">
+          <Button onClick={(e) => onAddDate(-1)} >One</Button>
+          <Button onClick={(e) => onAddDate(1)} >Two</Button>
+        </ButtonGroup>
 
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={range}
-              label="Age"
-              onChange={(e) => onSetRange(e.target.value)}
-            >
-              <MenuItem value={2}>2</MenuItem>
-              <MenuItem value={5}>5</MenuItem>
-              <MenuItem value={10}>10</MenuItem>
-            </Select>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={range}
+          label="Age"
+          onChange={(e) => onSetRange(e.target.value)}
+        >
+          <MenuItem value={2}>2</MenuItem>
+          <MenuItem value={5}>5</MenuItem>
+          <MenuItem value={10}>10</MenuItem>
+        </Select>
 
-          </div>
-          <div className="wrpSvg">
-            <SvgChart options={options} axis={axis} dataSets={dataSets} />
-          </div>
+      </div>
+      <div className="wrpSvg">
+        <SvgChart options={options} axis={axis} dataSets={dataSets} />
+      </div>
 
-        </div>
+    </div>
     //   </Provider>
     // </React.StrictMode>
   );

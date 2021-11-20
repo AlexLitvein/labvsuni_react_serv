@@ -36531,7 +36531,7 @@ var selText = function selText(state) {
 function dataSetsRdcr() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
   var action = arguments.length > 1 ? arguments[1] : undefined;
-  console.log('pathRdcr', action);
+  console.log('dataSetsRdcr', action);
 
   switch (action.type) {
     case SET_TEXT:
@@ -36680,18 +36680,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
-/* harmony import */ var redux_saga__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! redux-saga */ "./node_modules/redux-saga/dist/redux-saga-core-npm-proxy.esm.js");
-/* harmony import */ var _rdcrs_status_rdcr__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../rdcrs/status/rdcr */ "./client/rdcrs/status/rdcr.js");
-/* harmony import */ var _rdcrs_status_acts__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../rdcrs/status/acts */ "./client/rdcrs/status/acts.js");
-/* harmony import */ var _remoteData__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./remoteData */ "./client/store/remoteData.js");
-/* harmony import */ var _dataRdcrs_paths__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../dataRdcrs/paths */ "./client/dataRdcrs/paths.js");
+/* harmony import */ var _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
+/* harmony import */ var redux_saga__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! redux-saga */ "./node_modules/redux-saga/dist/redux-saga-core-npm-proxy.esm.js");
+/* harmony import */ var _rdcrs_status_rdcr__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../rdcrs/status/rdcr */ "./client/rdcrs/status/rdcr.js");
+/* harmony import */ var _rdcrs_status_acts__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../rdcrs/status/acts */ "./client/rdcrs/status/acts.js");
+/* harmony import */ var _remoteData__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./remoteData */ "./client/store/remoteData.js");
+/* harmony import */ var _dataRdcrs_paths__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../dataRdcrs/paths */ "./client/dataRdcrs/paths.js");
 
 
-var _marked = /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(fetchSensData),
-    _marked2 = /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(sagaWatcher);
+
+var _marked = /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().mark(fetchSensData),
+    _marked2 = /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().mark(sagaWatcher);
 
 
 
@@ -36706,66 +36708,123 @@ var _require = __webpack_require__(/*! redux-saga/effects */ "./node_modules/red
     takeLatest = _require.takeLatest,
     delay = _require.delay;
 
-var rootReducer = (0,redux__WEBPACK_IMPORTED_MODULE_6__.combineReducers)({
-  chartData: _dataRdcrs_paths__WEBPACK_IMPORTED_MODULE_5__.dataSetsRdcr,
-  status: _rdcrs_status_rdcr__WEBPACK_IMPORTED_MODULE_2__["default"]
+function fetchJson(_x, _x2, _x3) {
+  return _fetchJson.apply(this, arguments);
+}
+
+function _fetchJson() {
+  _fetchJson = (0,_babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().mark(function _callee(url, date, range) {
+    var data, res;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().wrap(function _callee$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            data = {};
+            _context3.next = 3;
+            return fetch(url, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+              },
+              body: JSON.stringify({
+                startData: date,
+                range: range
+              })
+            });
+
+          case 3:
+            res = _context3.sent;
+
+            if (!res.ok) {
+              _context3.next = 10;
+              break;
+            }
+
+            _context3.next = 7;
+            return res.json();
+
+          case 7:
+            data = _context3.sent;
+            _context3.next = 11;
+            break;
+
+          case 10:
+            console.log("Ошибка HTTP: " + response.status);
+
+          case 11:
+            return _context3.abrupt("return", data);
+
+          case 12:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee);
+  }));
+  return _fetchJson.apply(this, arguments);
+}
+
+var rootReducer = (0,redux__WEBPACK_IMPORTED_MODULE_7__.combineReducers)({
+  chartData: _dataRdcrs_paths__WEBPACK_IMPORTED_MODULE_6__.dataSetsRdcr,
+  status: _rdcrs_status_rdcr__WEBPACK_IMPORTED_MODULE_3__["default"]
 });
-var composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || redux__WEBPACK_IMPORTED_MODULE_6__.compose;
-var sagaMiddleware = (0,redux_saga__WEBPACK_IMPORTED_MODULE_1__["default"])();
-var MyStore = (0,redux__WEBPACK_IMPORTED_MODULE_6__.createStore)(rootReducer, composeEnhancers((0,redux__WEBPACK_IMPORTED_MODULE_6__.applyMiddleware)(sagaMiddleware)));
+var composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || redux__WEBPACK_IMPORTED_MODULE_7__.compose;
+var sagaMiddleware = (0,redux_saga__WEBPACK_IMPORTED_MODULE_2__["default"])();
+var MyStore = (0,redux__WEBPACK_IMPORTED_MODULE_7__.createStore)(rootReducer, composeEnhancers((0,redux__WEBPACK_IMPORTED_MODULE_7__.applyMiddleware)(sagaMiddleware)));
 
 function fetchSensData(act) {
   var receivedData, data;
-  return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function fetchSensData$(_context) {
+  return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().wrap(function fetchSensData$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
         case 0:
           _context.prev = 0;
           _context.next = 3;
-          return _remoteData__WEBPACK_IMPORTED_MODULE_4__.remote_data[act.payload.date].slice(0, act.payload.range);
+          return fetchJson('http://localhost:3000/weather/getSensData', act.payload.date, act.payload.range);
 
         case 3:
           receivedData = _context.sent;
-          _context.next = 6;
+          console.log('receivedData', receivedData);
+          _context.next = 7;
           return call(act.payload.func, receivedData);
 
-        case 6:
+        case 7:
           data = _context.sent;
-          _context.next = 9;
+          _context.next = 10;
           return delay(1000);
 
-        case 9:
-          _context.next = 11;
-          return put((0,_dataRdcrs_paths__WEBPACK_IMPORTED_MODULE_5__.setDataSet)(data));
+        case 10:
+          _context.next = 12;
+          return put((0,_dataRdcrs_paths__WEBPACK_IMPORTED_MODULE_6__.setDataSet)(data));
 
-        case 11:
-          _context.next = 17;
+        case 12:
+          _context.next = 18;
           break;
 
-        case 13:
-          _context.prev = 13;
+        case 14:
+          _context.prev = 14;
           _context.t0 = _context["catch"](0);
-          _context.next = 17;
-          return put((0,_rdcrs_status_acts__WEBPACK_IMPORTED_MODULE_3__.setError)(_context.t0.message));
+          _context.next = 18;
+          return put((0,_rdcrs_status_acts__WEBPACK_IMPORTED_MODULE_4__.setError)(_context.t0.message));
 
-        case 17:
+        case 18:
         case "end":
           return _context.stop();
       }
     }
-  }, _marked, null, [[0, 13]]);
+  }, _marked, null, [[0, 14]]);
 }
 
 ;
 
 function sagaWatcher() {
-  return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function sagaWatcher$(_context2) {
+  return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().wrap(function sagaWatcher$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
         case 0:
           console.log('sagaWatcher');
           _context2.next = 3;
-          return takeLatest(_dataRdcrs_paths__WEBPACK_IMPORTED_MODULE_5__.GET_SENS_DATA, fetchSensData);
+          return takeLatest(_dataRdcrs_paths__WEBPACK_IMPORTED_MODULE_6__.GET_SENS_DATA, fetchSensData);
 
         case 3:
         case "end":
@@ -37083,28 +37142,27 @@ function requestSensDataUrlencoded(data, range) {
     }
   }; // }
 
-}
-
-function fetchJson(url) {
-  return fetch(url).then(function (request) {
-    return request.text();
-  }).then(function (text) {
-    return JSON.parse(text);
-  })["catch"](function (error) {
-    console.log();
-  });
-} // TODO: перенести статус загрузки в pathRdcr
+} // function fetchJson(url) {
+//   return fetch(url)
+//     .then(request => request.text())
+//     .then(text => {
+//       return JSON.parse(text);
+//     })
+//     .catch(error => {
+//       console.log();
+//     });
+// }
+// TODO: перенести статус загрузки в pathRdcr
 
 
 function App() {
   var dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useDispatch)();
   var dataSets = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(_dataRdcrs_paths__WEBPACK_IMPORTED_MODULE_4__.selDataSets);
 
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(Date.now()),
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(new Date(Date.now())),
       _useState2 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__["default"])(_useState, 2),
       date = _useState2[0],
-      setDate = _useState2[1]; //1635839818003
-
+      setDate = _useState2[1];
 
   var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(2),
       _useState4 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__["default"])(_useState3, 2),
@@ -37144,10 +37202,11 @@ function App() {
     return out;
   };
 
-  var fetchDataRange = function fetchDataRange(date, range) {
-    // console.log(date);
+  var fetchData = function fetchData(date, range) {
+    console.log(date); // dispatch(getSensData({ date: new Date(date), range: range, func: convertArrObjectsToObjectPropertyArrays }));
+
     dispatch((0,_dataRdcrs_paths__WEBPACK_IMPORTED_MODULE_4__.getSensData)({
-      date: new Date(date).getDate() - 1,
+      date: date,
       range: range,
       func: convertArrObjectsToObjectPropertyArrays
     }));
@@ -37162,25 +37221,25 @@ function App() {
   var onSetDate = function onSetDate(date) {
     var add = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
     setDate(date);
-    fetchDataRange(date, range);
+    fetchData(date, range);
   };
 
   var onSetRange = function onSetRange(range) {
     setRange(range);
-    fetchDataRange(date, range);
+    fetchData(date, range);
   };
 
   var onAddDate = function onAddDate(add) {
     setDate(function (prev) {
       var res = addDateDay(prev, add);
-      fetchDataRange(res, range);
+      fetchData(res, range);
       return res;
     });
   };
 
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     console.log("App useEffect");
-    fetchDataRange(date, range);
+    fetchData(date, range);
   }, []); // componentDidMount()
 
   return (
@@ -84581,6 +84640,55 @@ function _assertThisInitialized(self) {
   }
 
   return self;
+}
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _asyncToGenerator)
+/* harmony export */ });
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
+  try {
+    var info = gen[key](arg);
+    var value = info.value;
+  } catch (error) {
+    reject(error);
+    return;
+  }
+
+  if (info.done) {
+    resolve(value);
+  } else {
+    Promise.resolve(value).then(_next, _throw);
+  }
+}
+
+function _asyncToGenerator(fn) {
+  return function () {
+    var self = this,
+        args = arguments;
+    return new Promise(function (resolve, reject) {
+      var gen = fn.apply(self, args);
+
+      function _next(value) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
+      }
+
+      function _throw(err) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
+      }
+
+      _next(undefined);
+    });
+  };
 }
 
 /***/ }),
