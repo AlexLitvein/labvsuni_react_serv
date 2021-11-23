@@ -35653,34 +35653,27 @@ function ChartCursor(_ref) {
       data = _ref.data;
   console.log("Call ChartCursor");
   options.noteW = 0;
-  options.noteH = 0;
+  options.noteH = options.axisTxtOffs;
 
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(options.rcClient.right),
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)({
+    x: options.rcClient.right,
+    y: options.rcClient.top
+  }),
       _useState2 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__["default"])(_useState, 2),
-      _x = _useState2[0],
-      setX = _useState2[1];
+      pos = _useState2[0],
+      setPos = _useState2[1];
 
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(options.rcClient.top),
-      _useState4 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__["default"])(_useState3, 2),
-      _y = _useState4[0],
-      setY = _useState4[1];
+  var testPos = function testPos(x, y) {
+    var right = options.rcClient.left + options.lnHSeg * options.numHSeg;
+    x = x < options.rcClient.left ? options.rcClient.left : x; // x = x > options.rcClient.right ? options.rcClient.right : x;
 
-  var testPosX = function testPosX(x) {
-    x = x < options.rcClient.left ? options.rcClient.left : x;
-    x = x > options.rcClient.right ? options.rcClient.right : x; // console.log(`x ${x} options.rcClient.bottom ${options.rcClient.bottom} `);
-
-    return x;
-  };
-
-  var testPosY = function testPosY(y) {
+    x = x > right ? right : x;
     y = y < options.rcClient.top ? options.rcClient.top : y;
     y = y > options.rcClient.bottom ? options.rcClient.bottom : y;
-    return y;
-  };
-
-  var setPos = function setPos(x, y) {
-    setX(testPosX(x));
-    setY(testPosY(y));
+    return {
+      x: x,
+      y: y
+    };
   };
 
   var aprox = function aprox(v1, v2, range, posInRange) {
@@ -35713,38 +35706,42 @@ function ChartCursor(_ref) {
       }
 
       var str = "".concat(axis[key].name, ": ").concat(res);
-      var sz = options.getStrBoundSize(str);
-      options.noteW = sz.width > options.noteW ? sz.width + options.axisTxtOffs : options.noteW;
+      var sz = options.getStrBoundSize(str, "note-text"); // options.noteW = sz.width > options.noteW ? sz.width + (options.axisTxtOffs << 1) : options.noteW;
+
+      options.noteW = sz.width > options.noteW ? sz.width : options.noteW;
       options.noteH += sz.height;
       out.push({
         clr: axis[key].clrPath,
         txt: str
-      });
+      }); // console.log('sz.height', sz.height);
     }
+
+    options.noteW += options.axisTxtOffs << 1; // добавляем отступы к ширине
 
     return out;
   };
 
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     svgElm.current.addEventListener('click', function (e) {
-      setPos(e.offsetX, e.offsetY); // console.log(`rc.left ${rc.left} rc.right ${rc.right} rc.bottom ${rc.bottom}`);
+      console.log('click');
+      setPos(testPos(e.offsetX, e.offsetY));
     });
     svgElm.current.addEventListener('mousemove', function (e) {
-      // console.log('mouseover', e);
       if (e.buttons === 1) {
-        setPos(e.offsetX, e.offsetY);
+        console.log('mousemove');
+        setPos(testPos(e.offsetX, e.offsetY));
       }
     });
   }, []); // componentDidMount()
 
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(react__WEBPACK_IMPORTED_MODULE_1__.Fragment, null, console.log('draw ChartCursor'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement("path", {
-    d: "M".concat(_x, " ").concat(options.rcClient.top, "V").concat(options.rcClient.bottom),
+    d: "M".concat(pos.x, " ").concat(options.rcClient.top, "V").concat(options.rcClient.bottom),
     className: "cursor"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(FlyNote, {
-    x: _x,
-    y: _y,
+    x: pos.x,
+    y: pos.y,
     options: options,
-    arrStr: getVal(_x, _y, 0)
+    arrStr: getVal(pos.x, pos.y, 0)
   }));
 }
 function FlyNote(_ref2) {
@@ -35754,13 +35751,16 @@ function FlyNote(_ref2) {
       arrStr = _ref2.arrStr;
 
   // console.log('FlyNote gObj', gObj);
-  var testPos = function testPos() {
+  var testPos = function testPos(x, y) {
+    // let out = { x: x, y: y, };
     var out = {
       x: x,
       y: y
     };
+    var right = options.rcClient.left + options.lnHSeg * options.numHSeg;
 
-    if (out.x + options.noteW > options.rcClient.right) {
+    if (out.x + options.noteW > right) {
+      // if (out.x + options.noteW > options.rcClient.right) {
       out.x = out.x - options.noteW;
     }
 
@@ -35773,30 +35773,32 @@ function FlyNote(_ref2) {
 
   function createRoundRect(x, y, w, h, r) {
     return "\n        M".concat(x, ",").concat(y, " a").concat(r, ",").concat(r, " 0 0,1 ").concat(r, ",").concat(-r, " \n        h").concat(w - (r << 1), " a").concat(r, ",").concat(r, " 0 0,1 ").concat(r, ",").concat(r, "\n        v").concat(h - r, " a").concat(r, ",").concat(r, " 0 0,1 ").concat(-r, ",").concat(r, "\n        h").concat(-w + (r << 1), " a").concat(r, ",").concat(r, " 0 0,1 ").concat(-r, ",").concat(-r, "z\n        ");
-  }
+  } // const [pos, setPos] = useState({ x: 0, y: 0 });
 
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)({
-    x: 0,
-    y: 0
+
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)({
+    x: x,
+    y: y
   }),
-      _useState6 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__["default"])(_useState5, 2),
-      pos = _useState6[0],
-      setPos = _useState6[1];
+      _useState4 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__["default"])(_useState3, 2),
+      pos = _useState4[0],
+      setPos = _useState4[1];
 
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-    setPos(testPos());
+    setPos(testPos(x, y));
   }, [x, y]);
 
-  if (options.noteW) {
+  if (arrStr.length !== 0) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(react__WEBPACK_IMPORTED_MODULE_1__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement("path", {
       d: createRoundRect(pos.x, pos.y, options.noteW, options.noteH, 6),
       className: "note"
     }), arrStr.map(function (el, i) {
+      var hStr = (options.noteH - options.axisTxtOffs) / arrStr.length;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement("text", {
-        key: i,
-        x: pos.x + 4,
-        y: pos.y + options.fontBBoxHeight * 0.7 + (i + 0) * options.fontBBoxHeight,
         className: "note-text",
+        key: i,
+        x: pos.x + options.axisTxtOffs,
+        y: pos.y + hStr + i * hStr,
         fill: el.clr
       }, el.txt, "  ");
     }));
@@ -35836,22 +35838,32 @@ var SvgChart = function SvgChart(_ref) {
       dataSets = _ref$dataSets === void 0 ? [] : _ref$dataSets;
   console.log('call SvgChart', dataSets);
   var opt = options;
+  var svgElm = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);
+  var txtRef = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);
+  var aniSetDataEl = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null); // let { width, height } = svgElm.current?.parentElement.getBoundingClientRect();
+  // const [sz, setSize] = useState({ width, height });
 
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)({
-    w: 320,
+    w: 480,
     h: 320
   }),
       _useState2 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__["default"])(_useState, 2),
       sz = _useState2[0],
-      setSize = _useState2[1];
+      setSize = _useState2[1]; // WARNING: ширину линии использовать кратную 2 пикселям, координаты целочисоенные
 
-  var svgElm = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);
-  var txtRef = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);
-  var aniSetDataEl = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null); // WARNING: ширину линии использовать кратную 2 пикселям, координаты целочисоенные
 
   var cut = function cut(n) {
     return Math.trunc(n);
-  };
+  }; // лучше отсекать, чем округлять, иначе сумма сегментов иногда будет больше отрезка в который они должны уложиться 
+  // const cut = (n) => Math.ceil(n);
+  // const cut = (n) => (Math.trunc(n * 10)) / 10;
+  // const cut = (n) => {
+  //     let t=Math.trunc(n * 10);
+  //     let res=t /10;
+  //     return res;
+  //     // return Math.trunc(n * 10) * 0.1;
+  // }
+
 
   var _clientRect = function _clientRect() {
     // oreder!
@@ -35864,19 +35876,20 @@ var SvgChart = function SvgChart(_ref) {
   };
 
   opt.numHSeg = dataSets.length !== 0 ? dataSets[0]._id.length - 1 : 1;
-  opt.lnHSeg = (sz.w - options.padding.left - options.padding.right) / opt.numHSeg;
-  opt.lnVSeg = (sz.h - options.padding.top - options.padding.bottom) / (options.countVLabels - 1);
-  opt.rcClient = _clientRect(); // if (dataSets.length !== 0) {
-  //     aniSetDataEl.current.beginElement();
-  // }
+  opt.numVSeg = options.countVLabels - 1;
+  opt.lnHSeg = cut((sz.w - options.padding.left - options.padding.right) / opt.numHSeg);
+  opt.lnVSeg = cut((sz.h - options.padding.top - options.padding.bottom) / opt.numVSeg);
+  opt.rcClient = _clientRect();
 
   options.getOrthoLine = function (x, y, size, numSeg, type) {
     var d = "M".concat(cut(x), " ").concat(cut(y));
-    var pos = type === 'H' ? x : y;
-    var lnSeg = size / numSeg;
+    var pos = type === 'H' ? x : y; // let lnSeg = size / numSeg;
+
+    var lnSeg = type === 'H' ? opt.lnHSeg : opt.lnVSeg;
 
     for (var i = 1; i <= numSeg; i++) {
-      d += type + cut(pos + lnSeg * i);
+      // d += type + cut(pos + lnSeg * i);
+      d += type + (pos + lnSeg * i);
     }
 
     return d;
@@ -35898,22 +35911,28 @@ var SvgChart = function SvgChart(_ref) {
     }
 
     return d;
-  }; // options.getOrthoPath = (x, y, size, numSeg, type) => {
-  //     let d = `M${cut(x)} ${cut(y)}`;
-  //     let posX = type === 'H' ? x : y;
-  //     let posY = type === 'H' ? y : x;
-  //     let lnSeg = size / numSeg;
-  //     for (let i = 1; i <= numSeg; i++) {
-  //         // d += type + cut(pos + lnSeg * i);
-  //         d += `${cut(posX + lnSeg * i)} ${posY}`;
-  //         if (i < numSeg - 1) { d += 'L'; }
-  //     }
-  //     return d;
-  // }
+  };
 
+  options.calcStride = function (minLen, totalLen, count) {
+    var i = 24,
+        stride = 0;
+
+    for (; i > 0; i--) {
+      if (24 % i === 0) {
+        var dxVLine = totalLen / (i * count);
+
+        if (dxVLine > minLen) {
+          stride = 24 / i;
+          break;
+        }
+      }
+    }
+
+    return stride || 1;
+  };
 
   var buildAxlePath = function buildAxlePath(rc, type) {
-    return options.getOrthoLine(rc.left, type === 'H' ? rc.top + opt.lnVSeg * (options.countVLabels - 1) : rc.top, type === 'H' ? rc.right - rc.left : rc.bottom - rc.top, type === 'H' ? opt.numHSeg : options.countVLabels - 1, type);
+    return options.getOrthoLine(rc.left, type === 'H' ? rc.top + opt.lnVSeg * opt.numVSeg : rc.top, type === 'H' ? rc.right - rc.left : rc.bottom - rc.top, type === 'H' ? opt.numHSeg : opt.numVSeg, type);
   };
 
   var calcPadding = function calcPadding() {
@@ -35942,44 +35961,24 @@ var SvgChart = function SvgChart(_ref) {
 
   };
 
-  opt.getStrBoundSize = function (str) {
+  opt.getStrBoundSize = function (str, cls) {
     var bbox = {
       width: 0,
       height: 0
     };
 
     if (txtRef.current) {
-      txtRef.current.innerHTML = str;
-      bbox = txtRef.current.getBBox(); // console.log('txtRef.current', txtRef.current);
+      txtRef.current.innerHTML = str; // if(cls) txtRef.current.className = cls;
 
-      opt.fontBBoxHeight = bbox.height;
+      if (cls) txtRef.current.setAttribute('class', cls);
+      bbox = txtRef.current.getBBox();
     }
 
     return {
       width: cut(bbox.width),
       height: cut(bbox.height)
     };
-  }; // // data = [num1 , num2 , num3 , ...]
-  // const buildSvgAniPath = (rc, min, max, data) => {
-  //     // const rc = clientRect();
-  //     let val = 0;
-  //     // let lnSeg = (rc.right - rc.left) / (data.length - 1);
-  //     let res = { do: 'M', to: 'M' };
-  //     for (let i = 0; i < data.length; i++) {
-  //         val = data[i];
-  //         val = Math.round(((val - min) / (max - min)) * (rc.bottom - rc.top));
-  //         // res.do += `${cut(rc.left + opt.lnHSeg * i)} ${cut(rc.bottom)}`;
-  //         // res.to += `${cut(rc.left + opt.lnHSeg * i)} ${cut(rc.bottom - val)}`;
-  //         res.do += `${rc.left + opt.lnHSeg * i} ${rc.bottom}`;
-  //         res.to += `${rc.left + opt.lnHSeg * i} ${rc.bottom - val}`;
-  //         if (i < data.length - 1) {
-  //             res.do += 'L';
-  //             res.to += 'L';
-  //         }
-  //     }
-  //     return res;
-  // }
-
+  };
 
   var renderPathAxis = function renderPathAxis(rc, axis) {
     console.log("renderPathAxis");
@@ -35998,22 +35997,43 @@ var SvgChart = function SvgChart(_ref) {
   };
 
   var _formatDateStr = function _formatDateStr(str) {
-    var data = new Date(str);
-    var dataStr = ('0' + data.getHours()).slice(-2) + '/' + ('0' + data.getDate()).slice(-2) + '/' + ('0' + (data.getMonth() + 1)).slice(-2) + '/' + data.getFullYear() % 100;
+    var data = new Date(str); // let dataStr = ('0' + data.getHours()).slice(-2) + '/' + ('0' + data.getDate()).slice(-2) + '/' + ('0' + (data.getMonth() + 1)).slice(-2) + '/' + data.getFullYear() % 100;
+
+    var dataStr = ('0' + data.getDate()).slice(-2) + '/' + ('0' + (data.getMonth() + 1)).slice(-2) + '/' + ('0' + data.getHours()).slice(-2) + ':00';
     return dataStr;
   };
 
   var renderVTextAxis = function renderVTextAxis(rc, dataFieldText, arrDataSets) {
-    var dx = cut(options.fontBBoxHeight >> 2);
     var arrStrs = arrDataSets.length !== 0 ? arrDataSets[0][dataFieldText] : [];
 
     var tmpStr = _formatDateStr(arrStrs[0]);
 
-    var sz = opt.getStrBoundSize(tmpStr);
-    opt.padding.bottom = Math.max(opt.padding.bottom, sz.width + options.axisTxtOffs * 1);
-    arrStrs = arrStrs.map(function (el) {
-      // el = 2021-01-04T15:00:00.034Z           
-      return _formatDateStr(el);
+    var sz = opt.getStrBoundSize(tmpStr, 'txt-axis');
+    var dx = cut(sz.height >> 2);
+    opt.padding.bottom = Math.max(opt.padding.bottom, sz.width + options.axisTxtOffs * 0);
+    var stride = options.calcStride(sz.height, rc.right - rc.left, arrStrs.length / 24);
+    var prevDay = 0;
+    var currDay = 0;
+    arrStrs = arrStrs.map(function (el, i) {
+      // el = 2021-01-04T15:00:00.034Z 
+      if (i % stride === 0) {
+        var res = '';
+        var data = new Date(el);
+        currDay = data.getDate();
+
+        if (currDay !== prevDay) {
+          res = _formatDateStr(el);
+        } else {
+          res = ('0' + data.getHours()).slice(-2) + ':00';
+        } // if (i % stride === 0) {
+        //     return _formatDateStr(el);
+        // }
+
+
+        prevDay = currDay; // return _formatDateStr(el);
+
+        return res;
+      }
     });
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_SvgTextGroup__WEBPACK_IMPORTED_MODULE_4__.TextGroup, {
       x: rc.left + dx,
@@ -36027,12 +36047,12 @@ var SvgChart = function SvgChart(_ref) {
 
   var renderHTextAxle = function renderHTextAxle(x, y, axle) {
     var arrStrs = [];
-    var delta = (Math.abs(axle.min) + axle.max) / (options.countVLabels - 1);
+    var delta = (Math.abs(axle.min) + axle.max) / opt.numVSeg;
     arrStrs.push(axle.max);
     var sz = opt.getStrBoundSize(axle.max);
     opt.padding.left = Math.max(opt.padding.left, sz.width + options.axisTxtOffs * 1);
 
-    for (var i = 1; i <= options.countVLabels - 2; i++) {
+    for (var i = 1; i <= opt.numVSeg - 1; i++) {
       arrStrs.push(axle.max - i * delta);
     }
 
@@ -36051,17 +36071,17 @@ var SvgChart = function SvgChart(_ref) {
 
   var renderHTextAxis = function renderHTextAxis(rc) {
     var res = [];
+    var sz = opt.getStrBoundSize('test');
     var cntAxis = Object.keys(axis).length - 1; // -1 тк первая ось горизонтальная
-    // let dy = options.fontBBoxHeight * 1;
 
-    var startPos = cut(rc.top - cntAxis * options.fontBBoxHeight / 2 * 1.15);
+    var startPos = cut(rc.top - cntAxis * sz.height / 2 * 1.15);
 
     for (var key in axis) {
       if (axis[key].type === 'H') {
         continue;
       }
 
-      res.push(renderHTextAxle(rc.left - options.axisTxtOffs, startPos += options.fontBBoxHeight, axis[key]));
+      res.push(renderHTextAxle(rc.left - options.axisTxtOffs, startPos += sz.height, axis[key]));
     }
 
     return res;
@@ -36186,7 +36206,9 @@ var SvgChart = function SvgChart(_ref) {
   }, [dataSets]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     console.log("SvgChart useEffect");
-    resize(); // calcPadding();
+    resize(); // const sz = opt.getStrBoundSize('test');
+    // opt.fontBBoxHeight = sz.height;
+    // calcPadding();
 
     window.addEventListener('resize', function (e) {
       resize();
@@ -36208,11 +36230,10 @@ var SvgChart = function SvgChart(_ref) {
     dur: "0.5",
     to: "M0 0h2"
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement("text", {
-    x: 0,
-    y: -10,
-    className: "note-text",
+    x: -100,
+    y: -100,
     ref: txtRef
-  }, "1234567890aeiouybcdfghjklmnpqrstvwyzW"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement("rect", {
+  }, "test"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement("rect", {
     x: "10",
     y: "10",
     width: "20",
@@ -36309,7 +36330,7 @@ var AniPath = function AniPath(_ref) {
       var newTD = {};
 
       if (prev.data.length === 0 || prev.data.length !== data.length) {
-        newTD.d = options.getOrthoPath(options.rcClient.left, options.rcClient.top + options.lnVSeg * (options.countVLabels - 1), options.rcClient.right - options.rcClient.left, options.numHSeg, 'H');
+        newTD.d = options.getOrthoPath(options.rcClient.left, options.rcClient.top + options.lnVSeg * options.numVSeg, options.rcClient.right - options.rcClient.left, options.numHSeg, 'H');
       } else {
         newTD.d = prev.t;
       }
@@ -36319,7 +36340,8 @@ var AniPath = function AniPath(_ref) {
 
       return newTD;
     });
-  }, [data]);
+  }, [data, options.rcClient]); // }, [data]);
+
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement("path", {
     className: 'path-data',
     style: {
@@ -36331,7 +36353,7 @@ var AniPath = function AniPath(_ref) {
     id: "ani_".concat(id),
     begin: "ani_set_data.begin",
     attributeName: "d",
-    dur: "0.5",
+    dur: "0.3",
     fill: "freeze",
     to: td.t
   }));
@@ -36683,12 +36705,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
+/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
 /* harmony import */ var redux_saga__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! redux-saga */ "./node_modules/redux-saga/dist/redux-saga-core-npm-proxy.esm.js");
 /* harmony import */ var _rdcrs_status_rdcr__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../rdcrs/status/rdcr */ "./client/rdcrs/status/rdcr.js");
 /* harmony import */ var _rdcrs_status_acts__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../rdcrs/status/acts */ "./client/rdcrs/status/acts.js");
-/* harmony import */ var _remoteData__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./remoteData */ "./client/store/remoteData.js");
-/* harmony import */ var _dataRdcrs_paths__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../dataRdcrs/paths */ "./client/dataRdcrs/paths.js");
+/* harmony import */ var _dataRdcrs_paths__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../dataRdcrs/paths */ "./client/dataRdcrs/paths.js");
 
 
 
@@ -36698,7 +36719,7 @@ var _marked = /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1
 
 
 
-
+ // import { remote_data } from './remoteData';
 
 
 
@@ -36708,12 +36729,12 @@ var _require = __webpack_require__(/*! redux-saga/effects */ "./node_modules/red
     takeLatest = _require.takeLatest,
     delay = _require.delay;
 
-function fetchJson(_x, _x2, _x3) {
+function fetchJson(_x, _x2, _x3, _x4) {
   return _fetchJson.apply(this, arguments);
 }
 
 function _fetchJson() {
-  _fetchJson = (0,_babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().mark(function _callee(url, date, range) {
+  _fetchJson = (0,_babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().mark(function _callee(url, date, range, stride) {
     var data, res;
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().wrap(function _callee$(_context3) {
       while (1) {
@@ -36728,7 +36749,8 @@ function _fetchJson() {
               },
               body: JSON.stringify({
                 startData: date,
-                range: range
+                range: range,
+                stride: stride
               })
             });
 
@@ -36764,13 +36786,13 @@ function _fetchJson() {
   return _fetchJson.apply(this, arguments);
 }
 
-var rootReducer = (0,redux__WEBPACK_IMPORTED_MODULE_7__.combineReducers)({
-  chartData: _dataRdcrs_paths__WEBPACK_IMPORTED_MODULE_6__.dataSetsRdcr,
+var rootReducer = (0,redux__WEBPACK_IMPORTED_MODULE_6__.combineReducers)({
+  chartData: _dataRdcrs_paths__WEBPACK_IMPORTED_MODULE_5__.dataSetsRdcr,
   status: _rdcrs_status_rdcr__WEBPACK_IMPORTED_MODULE_3__["default"]
 });
-var composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || redux__WEBPACK_IMPORTED_MODULE_7__.compose;
+var composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || redux__WEBPACK_IMPORTED_MODULE_6__.compose;
 var sagaMiddleware = (0,redux_saga__WEBPACK_IMPORTED_MODULE_2__["default"])();
-var MyStore = (0,redux__WEBPACK_IMPORTED_MODULE_7__.createStore)(rootReducer, composeEnhancers((0,redux__WEBPACK_IMPORTED_MODULE_7__.applyMiddleware)(sagaMiddleware)));
+var MyStore = (0,redux__WEBPACK_IMPORTED_MODULE_6__.createStore)(rootReducer, composeEnhancers((0,redux__WEBPACK_IMPORTED_MODULE_6__.applyMiddleware)(sagaMiddleware)));
 
 function fetchSensData(act) {
   var receivedData, data;
@@ -36780,35 +36802,34 @@ function fetchSensData(act) {
         case 0:
           _context.prev = 0;
           _context.next = 3;
-          return fetchJson('http://localhost:3000/weather/getSensData', act.payload.date, act.payload.range);
+          return fetchJson('http://localhost:3000/weather/getSensData', act.payload.date, act.payload.range, act.payload.stride);
 
         case 3:
           receivedData = _context.sent;
-          console.log('receivedData', receivedData);
-          _context.next = 7;
+          _context.next = 6;
           return call(act.payload.func, receivedData);
 
-        case 7:
+        case 6:
           data = _context.sent;
-          _context.next = 10;
-          return put((0,_dataRdcrs_paths__WEBPACK_IMPORTED_MODULE_6__.setDataSet)(data));
+          _context.next = 9;
+          return put((0,_dataRdcrs_paths__WEBPACK_IMPORTED_MODULE_5__.setDataSet)(data));
 
-        case 10:
-          _context.next = 16;
+        case 9:
+          _context.next = 15;
           break;
 
-        case 12:
-          _context.prev = 12;
+        case 11:
+          _context.prev = 11;
           _context.t0 = _context["catch"](0);
-          _context.next = 16;
+          _context.next = 15;
           return put((0,_rdcrs_status_acts__WEBPACK_IMPORTED_MODULE_4__.setError)(_context.t0.message));
 
-        case 16:
+        case 15:
         case "end":
           return _context.stop();
       }
     }
-  }, _marked, null, [[0, 12]]);
+  }, _marked, null, [[0, 11]]);
 }
 
 ;
@@ -36820,7 +36841,7 @@ function sagaWatcher() {
         case 0:
           console.log('sagaWatcher');
           _context2.next = 3;
-          return takeLatest(_dataRdcrs_paths__WEBPACK_IMPORTED_MODULE_6__.GET_SENS_DATA, fetchSensData);
+          return takeLatest(_dataRdcrs_paths__WEBPACK_IMPORTED_MODULE_5__.GET_SENS_DATA, fetchSensData);
 
         case 3:
         case "end":
@@ -36832,174 +36853,6 @@ function sagaWatcher() {
 
 sagaMiddleware.run(sagaWatcher);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MyStore);
-
-/***/ }),
-
-/***/ "./client/store/remoteData.js":
-/*!************************************!*\
-  !*** ./client/store/remoteData.js ***!
-  \************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "remote_data": () => (/* binding */ remote_data)
-/* harmony export */ });
-var data1 = [{
-  "_id": "2021-01-04T12:00:00.032Z",
-  "t": -24.2,
-  "p": 779.7,
-  "h": 22.3
-}, {
-  "_id": "2021-01-04T13:00:00.033Z",
-  "t": 23.9,
-  "p": 779.8,
-  "h": 62.8
-}, {
-  "_id": "2021-01-04T14:00:00.034Z",
-  "t": -23.7,
-  "p": 779.8,
-  "h": 62.7
-}, {
-  "_id": "2021-01-04T15:00:00.034Z",
-  "t": -23.4,
-  "p": 479.9,
-  "h": 62.3
-}, {
-  "_id": "2021-01-04T16:00:00.033Z",
-  "t": -23.6,
-  "p": 779.7,
-  "h": 43.1
-}, {
-  "_id": "2021-01-04T17:00:00.032Z",
-  "t": 0.0,
-  "p": 779.6,
-  "h": 63.3
-}, {
-  "_id": "2021-01-04T18:00:00.032Z",
-  "t": -23.9,
-  "p": 779.6,
-  "h": 62.4
-}, {
-  "_id": "2021-01-04T19:00:00.033Z",
-  "t": -23.9,
-  "p": 779.7,
-  "h": 61.7
-}, {
-  "_id": "2021-01-04T20:00:00.033Z",
-  "t": -23.9,
-  "p": 779.6,
-  "h": 61
-}, {
-  "_id": "2021-01-04T21:00:00.033Z",
-  "t": -23.9,
-  "p": 999.7,
-  "h": 90.6
-}];
-var data2 = [{
-  "_id": "2021-01-04T22:00:00.033Z",
-  "t": -23.7,
-  "p": 779.8,
-  "h": 60.7
-}, {
-  "_id": "2021-01-04T23:00:00.032Z",
-  "t": 43.9,
-  "p": 779.9,
-  "h": 60.8
-}, {
-  "_id": "2021-01-05T00:00:00.031Z",
-  "t": 23.7,
-  "p": 779.7,
-  "h": 61
-}, {
-  "_id": "2021-01-05T01:00:00.032Z",
-  "t": -23.3,
-  "p": 779.7,
-  "h": 60.5
-}, {
-  "_id": "2021-01-05T02:00:00.032Z",
-  "t": -23.1,
-  "p": 779.8,
-  "h": 60.7
-}, {
-  "_id": "2021-01-05T03:00:00.032Z",
-  "t": -23.8,
-  "p": 779.9,
-  "h": 62
-}, {
-  "_id": "2021-01-05T04:00:00.033Z",
-  "t": -24,
-  "p": 779.9,
-  "h": 61.8
-}, {
-  "_id": "2021-01-05T05:00:00.033Z",
-  "t": -42.9,
-  "p": 779.9,
-  "h": 60.3
-}, {
-  "_id": "2021-01-05T06:00:00.032Z",
-  "t": -22.2,
-  "p": 979.8,
-  "h": 58.1
-}, {
-  "_id": "2021-01-05T07:00:00.032Z",
-  "t": -21,
-  "p": 779.6,
-  "h": 55
-}];
-var data3 = [{
-  "_id": "2021-01-05T08:00:00.031Z",
-  "t": -20.3,
-  "p": 779.7,
-  "h": 52.8
-}, {
-  "_id": "2021-01-05T09:00:00.032Z",
-  "t": -7.5,
-  "p": 279.5,
-  "h": 27.1
-}, {
-  "_id": "2021-01-05T11:00:00.033Z",
-  "t": -23,
-  "p": 779.8,
-  "h": 69.2
-}, {
-  "_id": "2021-01-05T12:00:00.032Z",
-  "t": -23.6,
-  "p": 779.7,
-  "h": 70.5
-}, {
-  "_id": "2021-01-05T10:00:00Z",
-  "t": -21.5,
-  "p": 779.7,
-  "h": 58.3
-}, {
-  "_id": "2021-01-05T13:00:00.035Z",
-  "t": -24,
-  "p": 779.4,
-  "h": 71.2
-}, {
-  "_id": "2021-01-05T14:00:00.033Z",
-  "t": -25.1,
-  "p": 779.2,
-  "h": 70.4
-}, {
-  "_id": "2021-01-05T15:00:00.032Z",
-  "t": -26.6,
-  "p": 778.9,
-  "h": 68.9
-}, {
-  "_id": "2021-01-05T16:00:00.033Z",
-  "t": -25.5,
-  "p": 578.6,
-  "h": 71
-}, {
-  "_id": "2021-01-05T17:00:00.032Z",
-  "t": -24.7,
-  "p": 778.3,
-  "h": 70
-}];
-var remote_data = [data1, data2, data3]; //
 
 /***/ }),
 
@@ -37029,23 +36882,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mui_material_MenuItem__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @mui/material/MenuItem */ "./node_modules/@mui/material/MenuItem/MenuItem.js");
 /* harmony import */ var _mui_material_Select__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @mui/material/Select */ "./node_modules/@mui/material/Select/Select.js");
 
-// var isServ = false;
- // import { Provider, useDispatch, useSelector } from 'react-redux';
 
- // if (!isServ) {
-//   import('./css/style.css').then((something) => {
-//     console.log("import App.css");
-//   });
-// }
-// const React = require('react')
-// const ReactDOM = require('react-dom')
-// import { Provider } from 'react-redux';
-// import MyStore from './store/DataController';
-// if (process.env.APP_PROCESS === 'webpack') {
-//   import( './App.css').then(() => {
-//     console.log("import App.css");
-//  });
-// }
+ // import './App.css';
 
 
 
@@ -37108,8 +36946,7 @@ var options = {
   },
   // fontH: 10, //?
   countVLabels: 3,
-  axisTxtOffs: 8 // fontBBoxHeight: 0,
-  // biggestDataStrBBoxWidth: 0,  
+  axisTxtOffs: 8 // biggestDataStrBBoxWidth: 0,  
   // svgElm: null,
   // rcClient: null,
   // numHSeg: 0,
@@ -37138,29 +36975,30 @@ function requestSensDataUrlencoded(data, range) {
     }
   }; // }
 
-} // function fetchJson(url) {
-//   return fetch(url)
-//     .then(request => request.text())
-//     .then(text => {
-//       return JSON.parse(text);
-//     })
-//     .catch(error => {
-//       console.log();
-//     });
-// }
-// TODO: перенести статус загрузки в pathRdcr
+}
+
+function fetchJson(url) {
+  return fetch(url).then(function (request) {
+    return request.text();
+  }).then(function (text) {
+    return JSON.parse(text);
+  })["catch"](function (error) {
+    console.log();
+  });
+} // TODO: перенести статус загрузки в pathRdcr
 
 
 function App() {
   var dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useDispatch)();
-  var dataSets = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(_dataRdcrs_paths__WEBPACK_IMPORTED_MODULE_4__.selDataSets);
+  var dataSets = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(_dataRdcrs_paths__WEBPACK_IMPORTED_MODULE_4__.selDataSets); // const [date, setDate] = useState(new Date('01/05/2021'));//1635839818003
 
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(new Date(Date.now())),
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(Date.now()),
       _useState2 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__["default"])(_useState, 2),
       date = _useState2[0],
-      setDate = _useState2[1];
+      setDate = _useState2[1]; //1635839818003
 
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(2),
+
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(1),
       _useState4 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__["default"])(_useState3, 2),
       range = _useState4[0],
       setRange = _useState4[1]; // NOTE! входные данные массив объектов, например: 
@@ -37198,14 +37036,17 @@ function App() {
     return out;
   };
 
-  var fetchData = function fetchData(date, range) {
+  var fetchDataRange = function fetchDataRange(date, range) {
     // console.log(date);
-    // dispatch(getSensData({ date: new Date(date), range: range, func: convertArrObjectsToObjectPropertyArrays }));
+    var sz = options.getStrBoundSize('888', 'txt-axis');
+    var stride = options.calcStride(sz.height, options.rcClient.right - options.rcClient.left, range); // console.log("stride",stride);
+
     dispatch((0,_dataRdcrs_paths__WEBPACK_IMPORTED_MODULE_4__.getSensData)({
       date: date,
       range: range,
+      stride: stride,
       func: convertArrObjectsToObjectPropertyArrays
-    }));
+    })); //new Date(date).getDate() - 1
   };
 
   var addDateDay = function addDateDay(date, add) {
@@ -37217,83 +37058,76 @@ function App() {
   var onSetDate = function onSetDate(date) {
     var add = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
     setDate(date);
-    fetchData(date, range);
+    fetchDataRange(date, range);
   };
 
   var onSetRange = function onSetRange(range) {
     setRange(range);
-    fetchData(date, range);
+    fetchDataRange(date, range);
   };
 
   var onAddDate = function onAddDate(add) {
     setDate(function (prev) {
       var res = addDateDay(prev, add);
-      fetchData(res, range);
+      fetchDataRange(res, range);
       return res;
     });
   };
 
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     console.log("App useEffect");
-    fetchData(date, range);
+    fetchDataRange(date, range);
   }, []); // componentDidMount()
 
-  return (
-    /*#__PURE__*/
-    // <React.StrictMode>
-    //   <Provider store={MyStore}>
-    react__WEBPACK_IMPORTED_MODULE_1__.createElement("div", {
-      className: "App"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement("div", {
-      id: "controls"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_lab_LocalizationProvider__WEBPACK_IMPORTED_MODULE_5__["default"], {
-      dateAdapter: _mui_lab_AdapterDateFns__WEBPACK_IMPORTED_MODULE_6__["default"],
-      locale: date_fns_locale_ru__WEBPACK_IMPORTED_MODULE_7__["default"]
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_lab_DatePicker__WEBPACK_IMPORTED_MODULE_8__["default"], {
-      mask: '__.__.____',
-      label: "Basic example",
-      value: date,
-      onChange: function onChange(newVal) {
-        return onSetDate(newVal);
-      },
-      renderInput: function renderInput(params) {
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_material_TextField__WEBPACK_IMPORTED_MODULE_9__["default"], params);
-      }
-    })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_material_ButtonGroup__WEBPACK_IMPORTED_MODULE_10__["default"], {
-      variant: "contained",
-      "aria-label": "outlined primary button group"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_material_Button__WEBPACK_IMPORTED_MODULE_11__["default"], {
-      onClick: function onClick(e) {
-        return onAddDate(-1);
-      }
-    }, "One"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_material_Button__WEBPACK_IMPORTED_MODULE_11__["default"], {
-      onClick: function onClick(e) {
-        return onAddDate(1);
-      }
-    }, "Two")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_material_Select__WEBPACK_IMPORTED_MODULE_12__["default"], {
-      labelId: "demo-simple-select-label",
-      id: "demo-simple-select",
-      value: range,
-      label: "Age",
-      onChange: function onChange(e) {
-        return onSetRange(e.target.value);
-      }
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_material_MenuItem__WEBPACK_IMPORTED_MODULE_13__["default"], {
-      value: 2
-    }, "2"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_material_MenuItem__WEBPACK_IMPORTED_MODULE_13__["default"], {
-      value: 5
-    }, "5"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_material_MenuItem__WEBPACK_IMPORTED_MODULE_13__["default"], {
-      value: 10
-    }, "10"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement("div", {
-      className: "wrpSvg"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_components_SvgChart__WEBPACK_IMPORTED_MODULE_3__["default"], {
-      options: options,
-      axis: axis,
-      dataSets: dataSets
-    }))) //   </Provider>
-    // </React.StrictMode>
-
-  );
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement("div", {
+    className: "App"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement("div", {
+    id: "controls"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_lab_LocalizationProvider__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    dateAdapter: _mui_lab_AdapterDateFns__WEBPACK_IMPORTED_MODULE_6__["default"],
+    locale: date_fns_locale_ru__WEBPACK_IMPORTED_MODULE_7__["default"]
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_lab_DatePicker__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    mask: '__.__.____',
+    label: "Basic example",
+    value: date,
+    onChange: function onChange(newVal) {
+      return onSetDate(newVal);
+    },
+    renderInput: function renderInput(params) {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_material_TextField__WEBPACK_IMPORTED_MODULE_9__["default"], params);
+    }
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_material_ButtonGroup__WEBPACK_IMPORTED_MODULE_10__["default"], {
+    variant: "contained",
+    "aria-label": "outlined primary button group"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_material_Button__WEBPACK_IMPORTED_MODULE_11__["default"], {
+    onClick: function onClick(e) {
+      return onAddDate(-1);
+    }
+  }, "One"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_material_Button__WEBPACK_IMPORTED_MODULE_11__["default"], {
+    onClick: function onClick(e) {
+      return onAddDate(1);
+    }
+  }, "Two")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_material_Select__WEBPACK_IMPORTED_MODULE_12__["default"], {
+    labelId: "demo-simple-select-label",
+    id: "demo-simple-select",
+    value: range,
+    label: "Age",
+    onChange: function onChange(e) {
+      return onSetRange(e.target.value);
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_material_MenuItem__WEBPACK_IMPORTED_MODULE_13__["default"], {
+    value: 1
+  }, "1"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_material_MenuItem__WEBPACK_IMPORTED_MODULE_13__["default"], {
+    value: 7
+  }, "7"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_material_MenuItem__WEBPACK_IMPORTED_MODULE_13__["default"], {
+    value: 30
+  }, "30"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement("div", {
+    className: "wrpSvg"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_components_SvgChart__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    options: options,
+    axis: axis,
+    dataSets: dataSets
+  })));
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (App);

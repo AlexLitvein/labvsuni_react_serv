@@ -1,28 +1,6 @@
-// var isServ = false;
-
 import React, { useState, useEffect } from 'react';
-// import { Provider, useDispatch, useSelector } from 'react-redux';
 import { useDispatch, useSelector } from 'react-redux';
-// if (!isServ) {
-//   import('./css/style.css').then((something) => {
-//     console.log("import App.css");
-//   });
-// }
-
-
-
-// const React = require('react')
-// const ReactDOM = require('react-dom')
-// import { Provider } from 'react-redux';
-// import MyStore from './store/DataController';
-
-// if (process.env.APP_PROCESS === 'webpack') {
-//   import( './App.css').then(() => {
-//     console.log("import App.css");
-//  });
-// }
-
-
+// import './App.css';
 import SvgChart from './components/SvgChart';
 import { getSensData, selDataSets } from './dataRdcrs/paths';
 
@@ -60,7 +38,6 @@ const options = {
   // fontH: 10, //?
   countVLabels: 3,
   axisTxtOffs: 8,
-  // fontBBoxHeight: 0,
   // biggestDataStrBBoxWidth: 0,  
   // svgElm: null,
   // rcClient: null,
@@ -93,27 +70,25 @@ function requestSensDataUrlencoded(data, range) {
   // }
 }
 
-// function fetchJson(url) {
-//   return fetch(url)
-//     .then(request => request.text())
-//     .then(text => {
-//       return JSON.parse(text);
-//     })
-//     .catch(error => {
-//       console.log();
-//     });
-// }
-
-
+function fetchJson(url) {
+  return fetch(url)
+    .then(request => request.text())
+    .then(text => {
+      return JSON.parse(text);
+    })
+    .catch(error => {
+      console.log();
+    });
+}
 
 // TODO: перенести статус загрузки в pathRdcr
 function App() {
   const dispatch = useDispatch();
   const dataSets = useSelector(selDataSets);
 
-
-  const [date, setDate] = useState(new Date(Date.now()));
-  const [range, setRange] = useState(2);
+  // const [date, setDate] = useState(new Date('01/05/2021'));//1635839818003
+  const [date, setDate] = useState(Date.now());//1635839818003
+  const [range, setRange] = useState(1);
 
 
   // NOTE! входные данные массив объектов, например: 
@@ -146,10 +121,13 @@ function App() {
     return out;
   }
 
-  const fetchData = (date, range) => {
+  const fetchDataRange = (date, range) => {
     // console.log(date);
-    // dispatch(getSensData({ date: new Date(date), range: range, func: convertArrObjectsToObjectPropertyArrays }));
-    dispatch(getSensData({ date: date, range: range, func: convertArrObjectsToObjectPropertyArrays }));
+    const sz = options.getStrBoundSize('888', 'txt-axis');
+    let stride = options.calcStride(sz.height, options.rcClient.right - options.rcClient.left, range);
+    // console.log("stride",stride);
+
+    dispatch(getSensData({ date: date, range: range, stride: stride, func: convertArrObjectsToObjectPropertyArrays }));//new Date(date).getDate() - 1
   }
 
   const addDateDay = (date, add) => {
@@ -160,34 +138,31 @@ function App() {
 
   const onSetDate = (date, add = 0) => {
     setDate(date);
-    fetchData(date, range);
+    fetchDataRange(date, range);
   }
 
   const onSetRange = (range) => {
     setRange(range);
-    fetchData(date, range);
+    fetchDataRange(date, range);
   }
 
   const onAddDate = (add) => {
     setDate((prev) => {
       const res = addDateDay(prev, add);
-      fetchData(res, range);
+      fetchDataRange(res, range);
       return res;
     });
   }
 
-
-
   useEffect(() => {
     console.log("App useEffect");
-    fetchData(date, range);
+    fetchDataRange(date, range);
   }, []); // componentDidMount()
 
   return (
-    // <React.StrictMode>
-    //   <Provider store={MyStore}>
     <div className="App">
       <div id="controls">
+
         <LocalizationProvider dateAdapter={AdapterDateFns} locale={ruLocale}>
           <DatePicker
             mask={'__.__.____'}
@@ -210,9 +185,9 @@ function App() {
           label="Age"
           onChange={(e) => onSetRange(e.target.value)}
         >
-          <MenuItem value={2}>2</MenuItem>
-          <MenuItem value={5}>5</MenuItem>
-          <MenuItem value={10}>10</MenuItem>
+          <MenuItem value={1}>1</MenuItem>
+          <MenuItem value={7}>7</MenuItem>
+          <MenuItem value={30}>30</MenuItem>
         </Select>
 
       </div>
@@ -221,8 +196,6 @@ function App() {
       </div>
 
     </div>
-    //   </Provider>
-    // </React.StrictMode>
   );
 }
 

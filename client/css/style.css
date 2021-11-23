@@ -7,11 +7,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
 .App {
   background-color: chocolate;
   /* display: flex;
@@ -32,7 +27,7 @@ svg {
   /* родитель должен обязательно иметь привязку по высоте к чему-либо */
   /* border: 1px dashed black; */
   background-color: rgb(109, 255, 80);
-  font-size: 14px;
+  font-size: 1rem;
   /* position: absolute; */
   /* shape-rendering:geometricPrecision;     */
   box-sizing: border-box;
@@ -67,7 +62,7 @@ svg {
 
 .txt-axis{
   /* font-family: lato-normal; */
-  /* font-size: 10px; */
+  font-size: 0.8rem;
   text-anchor: end;
   /* text-align: left; */
   /* transform: rotate(-90deg); фигня выходит */
@@ -91,6 +86,7 @@ svg {
 
 .note-text{
   /* font-size: 10px; */
+  font-size: 0.5rem;
 }
 
 .mrk-axis{

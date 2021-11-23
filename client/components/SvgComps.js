@@ -29,7 +29,7 @@ export const AniPath = ({ id, options, axle, data }) => {
             if (prev.data.length === 0 || prev.data.length !== data.length) {
                 newTD.d = options.getOrthoPath(
                     options.rcClient.left,
-                    options.rcClient.top + (options.lnVSeg * (options.countVLabels - 1)),
+                    options.rcClient.top + (options.lnVSeg * options.numVSeg),
                     options.rcClient.right - options.rcClient.left,
                     options.numHSeg ,
                     'H'
@@ -42,15 +42,15 @@ export const AniPath = ({ id, options, axle, data }) => {
             // console.log('AniPath res', newTD);
             return newTD;
         });
-
-    }, [data]);
+    }, [data, options.rcClient]);
+    // }, [data]);
 
     return (
         <path
             className={'path-data'}
             style={{ stroke: axle.clrPath, marker: `url("#mrk_${id}")` }}           
             d={td.d}>
-            <animate id={`ani_${id}`} begin="ani_set_data.begin" attributeName="d" dur="0.5" fill="freeze" to={td.t} />
+            <animate id={`ani_${id}`} begin="ani_set_data.begin" attributeName="d" dur="0.3" fill="freeze" to={td.t} />
         </path>
     );
 }
